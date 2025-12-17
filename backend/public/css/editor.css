@@ -1,211 +1,103 @@
-.editor-container {
-  max-width: 900px;
-  margin: 90px auto;
-  padding: 0 24px;
+/* =========================
+   CONTENEDOR GENERAL
+========================= */
+.capitulo-container {
+  max-width: 1100px;
+  margin: 120px auto;
+  padding: 0 32px;
 }
 
-.editor-container h1 {
-  font-size: 2rem;
+/* =========================
+   TÍTULO
+========================= */
+.capitulo-titulo {
+  text-align: center;
+  font-size: 2.4rem;
   font-weight: 700;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
   color: #2f3e34;
 }
 
-/* FORM */
-.nuevo-capitulo {
-  background: linear-gradient(180deg, #f4f6f1, #e2efe6);
-  border-radius: 22px;
-  padding: 36px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+/* =========================
+   TARJETA ÚNICA
+========================= */
+.pagina-capitulo {
+  background: linear-gradient(180deg, #ffffff, #f3f5f0);
+  border-radius: 28px;
+  padding: 56px 64px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
-.nuevo-capitulo label {
-  display: block;
-  margin-bottom: 8px;
+/* =========================
+   TEXTO
+========================= */
+.pagina-capitulo p {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 2;
+  color: #3e3e3e;
+  margin-bottom: 28px;
+}
+
+/* =========================
+   SEPARADOR ---
+========================= */
+.separador {
+  text-align: center;
+  margin: 48px 0;
   font-size: 0.9rem;
-  color: #3e4a42;
+  letter-spacing: 6px;
+  color: #8b6b4a;
 }
 
-/* INPUTS */
-.input-titulo,
-.input-fecha,
-.input-descripcion {
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 22px;
-  border-radius: 12px;
-  border: 1px solid #cfd8cf;
-  font-size: 0.95rem;
-  font-family: inherit;
-}
-
-.input-descripcion {
-  resize: vertical;
-  min-height: 80px;
-  line-height: 1.6;
-}
-
-/* TEXTAREA PRINCIPAL */
-.editor-texto {
-  width: 100%;
-  min-height: 280px;
-  padding: 14px;
-  margin-bottom: 26px;
-  border-radius: 14px;
-  border: 1px solid #cfd8cf;
-  resize: vertical;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  font-family: inherit;
-}
-
-/* ACTIONS */
-.acciones {
-  display: flex;
-  gap: 16px;
-  justify-content: flex-end;
-}
-
-.btn-publicar,
-.btn-programar {
-  padding: 12px 20px;
-  border-radius: 14px;
-  border: none;
+/* BOTÓN VOLVER */
+.btn-volver {
+  display: inline-block;
+  margin-bottom: 28px;
+  padding: 10px 18px;
   font-size: 0.9rem;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-weight: 500;
+  color: #2f6f4e;
+  background-color: rgba(47, 111, 78, 0.08);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.25s ease;
 }
 
-.btn-publicar {
-  background-color: #2f6f4e;
-  color: #fff;
-}
-
-.btn-programar {
-  background-color: #8b6b4a;
-  color: #fff;
-}
-
-.btn-publicar:hover,
-.btn-programar:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
-}
-
-/* CONTADOR */
-.contador-descripcion {
-  display: block;
-  text-align: right;
-  font-size: 0.8rem;
-  margin-bottom: 24px;
-  color: #6b7a70;
-}
-
-/* PREVIEW */
-.preview-capitulo {
-  margin-top: 48px;
-  background: #f4f6f1;
-  border-radius: 22px;
-  padding: 36px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-}
-
-.preview-capitulo h2 {
-  font-size: 1.8rem;
-  margin-bottom: 16px;
-  color: #2f3e34;
-}
-
-.preview-descripcion {
-  font-size: 1rem;
-  margin-bottom: 32px;
-  color: #4a5a51;
-}
-
-.preview-paginas .pagina {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 24px;
-  margin-bottom: 24px;
-  line-height: 1.7;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-}
-
-.hidden {
-  display: none;
+.btn-volver:hover {
+  background-color: rgba(47, 111, 78, 0.16);
+  transform: translateX(-3px);
 }
 
 /* =========================
    RESPONSIVE – AGREGADO
 ========================= */
 
+@media (max-width: 900px) {
+  .pagina-capitulo {
+    padding: 44px 40px;
+  }
+}
+
 @media (max-width: 768px) {
-  .nuevo-capitulo,
-  .preview-capitulo {
-    padding: 28px;
+  .capitulo-container {
+    margin: 90px auto;
+    padding: 0 24px;
   }
 
-  .acciones {
-    flex-direction: column;
-    align-items: stretch;
+  .pagina-capitulo {
+    padding: 36px 28px;
+  }
+
+  .capitulo-titulo {
+    font-size: 2rem;
+    margin-bottom: 40px;
   }
 }
 
 @media (max-width: 480px) {
-  .editor-container {
-    margin: 70px auto;
-    padding: 0 16px;
-  }
-
-  .editor-container h1 {
-    font-size: 1.6rem;
+  .pagina-capitulo p {
+    font-size: 1rem;
+    line-height: 1.8;
   }
 }
-
-/* =========================
-   LISTA DE CAPÍTULOS
-========================= */
-
-.lista-capitulos {
-  margin-top: 60px;
-}
-
-.lista-capitulos h2 {
-  margin-bottom: 20px;
-  color: #2f3e34;
-}
-
-.capitulo-item {
-  background: #f4f6f1;
-  border-radius: 18px;
-  padding: 20px;
-  margin-bottom: 18px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-}
-
-.capitulo-item h3 {
-  margin-bottom: 10px;
-}
-
-.capitulo-acciones {
-  display: flex;
-  gap: 12px;
-}
-
-.capitulo-acciones button {
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-editar {
-  background: #8b6b4a;
-  color: white;
-}
-
-.btn-borrar {
-  background: #9b3a3a;
-  color: white;
-}
-
