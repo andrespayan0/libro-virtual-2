@@ -112,5 +112,34 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  contenido.addEventListener("keydown", e => {
+
+    if (e.ctrlKey && e.key === "b") {
+      e.preventDefault();
+      document.execCommand("bold");
+    }
+
+    if (e.ctrlKey && e.key === "i") {
+      e.preventDefault();
+      document.execCommand("italic");
+    }
+
+    if (e.ctrlKey && e.key === "u") {
+      e.preventDefault();
+      document.execCommand("underline");
+    }
+
+    if (e.key === "Tab") {
+      e.preventDefault();
+
+      if (e.shiftKey) {
+        document.execCommand("outdent");
+      } else {
+        document.execCommand("indent");
+      }
+    }
+  });
+
+
   cargarCapitulos();
 });

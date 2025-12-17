@@ -101,3 +101,29 @@
     line-height: 1.8;
   }
 }
+
+body.dark {
+  background: #121212;
+}
+
+body.dark .capitulo-titulo {
+  color: #eaeaea;
+}
+
+body.dark .pagina-capitulo {
+  background: #1e1e1e;
+  box-shadow: none;
+}
+
+body.dark .pagina-capitulo p {
+  color: #dcdcdc;
+}
+
+body.dark .separador {
+  color: #777;
+}
+
+body.dark .btn-volver {
+  background-color: rgba(255,255,255,0.08);
+  color: #eaeaea;
+}

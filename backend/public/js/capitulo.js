@@ -3,50 +3,42 @@ const index = params.get("id");
 
 const tituloEl = document.getElementById("tituloCapitulo");
 const contenidoEl = document.getElementById("contenidoCapitulo");
+const btnModo = document.getElementById("modoLectura");
 
+// ====== CARGAR CAPÍTULO ======
 fetch("/api/capitulos")
   .then(res => res.json())
   .then(capitulos => {
     const capitulo = capitulos[index];
 
     if (!capitulo || !capitulo.paginas || capitulo.paginas.length === 0) {
+      tituloEl.textContent = "Capítulo";
       contenidoEl.innerHTML = "<p>Este capítulo aún no tiene contenido.</p>";
       return;
     }
 
     tituloEl.textContent = capitulo.titulo;
 
-    const textoCompleto = capitulo.paginas.join("\n\n---\n\n");
-
-    renderizarContenido(textoCompleto);
+    // CLAVE: respetar HTML del editor
+    contenidoEl.innerHTML = capitulo.paginas.join("");
   })
   .catch(err => {
     contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
     console.error(err);
   });
 
-function renderizarContenido(texto) {
-  contenidoEl.innerHTML = "";
+// ====== MODO OSCURO (LECTORES) ======
+if (btnModo) {
+  if (localStorage.getItem("modoLectura") === "dark") {
+    document.body.classList.add("dark");
+  }
 
-  const bloques = texto.split(/\n*---+\n*/);
+  btnModo.onclick = () => {
+    document.body.classList.toggle("dark");
 
-  bloques.forEach((bloque, i) => {
-    const parrafos = bloque
-      .split(/\n+/)
-      .map(p => p.trim())
-      .filter(p => p !== "");
-
-    parrafos.forEach(parrafo => {
-      const p = document.createElement("p");
-      p.textContent = parrafo;
-      contenidoEl.appendChild(p);
-    });
-
-    if (i < bloques.length - 1) {
-      const separador = document.createElement("div");
-      separador.className = "separador";
-      separador.textContent = "✦ ✦ ✦";
-      contenidoEl.appendChild(separador);
-    }
-  });
+    localStorage.setItem(
+      "modoLectura",
+      document.body.classList.contains("dark") ? "dark" : "light"
+    );
+  };
 }
