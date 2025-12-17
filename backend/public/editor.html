@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <title>Panel del autor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel del autor | Confesiones</title>
+
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/editor.css">
+  <link rel="shortcut icon" href="assets/img/icon.png" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
 
 <header>
-  <div class="brand"><span class="brand-title">Panel del autor</span></div>
+  <div class="brand">
+    <span class="brand-title">Panel del autor</span>
+  </div>
+
   <nav>
-    <a href="index.html">Volver</a>
-    <button id="logoutBtn">Cerrar sesión</button>
+    <a href="index.html">Volver al libro</a>
+    <a href="#" id="logoutBtn" class="logout-btn">Cerrar sesión</a>
   </nav>
 </header>
 
 <main class="editor-container">
-  <h1>Editor de capítulos</h1>
+
+  <h1>Nuevo / Editar capítulo</h1>
+  <p id="mensaje"></p>
 
   <section class="nuevo-capitulo">
-    <select id="capitulosSelect" class="input-titulo"></select>
 
-    <input id="titulo" class="input-titulo" placeholder="Título">
+    <label>Título</label>
+    <input id="titulo" class="input-titulo" type="text">
 
-    <textarea id="descripcion" class="input-descripcion" maxlength="200" placeholder="Descripción"></textarea>
-    <small id="contador">0 / 200</small>
+    <label>Descripción</label>
+    <textarea id="descripcion" class="input-descripcion"></textarea>
 
-    <div class="toolbar">
-      <button data-cmd="bold">B</button>
-      <button data-cmd="italic">I</button>
-      <button data-cmd="underline">U</button>
-      <button data-cmd="insertUnorderedList">•</button>
-      <button data-cmd="justifyLeft">⯇</button>
-      <button data-cmd="justifyCenter">≡</button>
-      <button data-cmd="justifyRight">⯈</button>
-      <select id="fontSize">
-        <option value="3">Normal</option>
-        <option value="4">Grande</option>
-        <option value="5">Muy grande</option>
-      </select>
-    </div>
+    <label>Contenido</label>
+    <textarea id="contenido" class="editor-texto"></textarea>
 
-    <div id="editor" class="editor-texto" contenteditable="true"></div>
+    <label>Fecha de publicación</label>
+    <input id="fecha" type="datetime-local" class="input-fecha">
 
     <div class="acciones">
-      <button id="previewBtn">Vista previa</button>
-      <button id="guardarBtn">Guardar</button>
-      <button id="eliminarBtn" class="danger">Eliminar</button>
+      <button id="publicarBtn" class="btn-publicar">Guardar</button>
     </div>
+
   </section>
 
-  <section id="preview" class="preview-capitulo hidden"></section>
+  <section class="lista-capitulos">
+    <h2>Capítulos existentes</h2>
+    <div id="listaCapitulos"></div>
+  </section>
+
 </main>
 
-<footer><p>Panel privado</p></footer>
+<footer>
+  <p>Panel privado del autor</p>
+</footer>
 
 <script src="js/editor.js"></script>
 </body>
