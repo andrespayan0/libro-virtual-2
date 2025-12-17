@@ -38,6 +38,32 @@
     <textarea id="descripcion" class="input-descripcion"></textarea>
 
     <label>Contenido</label>
+
+    <!-- ===== BARRA DE FORMATO (AGREGADA) ===== -->
+    <div class="editor-toolbar">
+      <select id="fontFamily">
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Arial">Arial</option>
+      </select>
+
+      <select id="fontSize">
+        <option value="3">Normal</option>
+        <option value="4">Grande</option>
+        <option value="5">Muy grande</option>
+      </select>
+
+      <input type="color" id="fontColor">
+
+      <button type="button" data-cmd="bold"><b>B</b></button>
+      <button type="button" data-cmd="italic"><i>I</i></button>
+      <button type="button" data-cmd="underline"><u>U</u></button>
+    </div>
+
+    <!-- ===== EDITOR VISUAL (AGREGADO) ===== -->
+    <div id="editorVisual" class="editor-visual" contenteditable="true"></div>
+
+    <!-- ===== TU TEXTAREA ORIGINAL (SIN CAMBIOS) ===== -->
     <textarea id="contenido" class="editor-texto"></textarea>
 
     <label>Fecha de publicación</label>

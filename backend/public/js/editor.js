@@ -1,91 +1,93 @@
-const token = localStorage.getItem("token");
-if (!token) location.href = "/login.html";
+const params = new URLSearchParams(window.location.search);
+const index = params.get("id");
 
-const titulo = document.getElementById("titulo");
-const descripcion = document.getElementById("descripcion");
-const contenido = document.getElementById("contenido");
-const fecha = document.getElementById("fecha");
-const mensaje = document.getElementById("mensaje");
-const lista = document.getElementById("listaCapitulos");
-const publicarBtn = document.getElementById("publicarBtn");
-const logoutBtn = document.getElementById("logoutBtn");
+const tituloEl = document.getElementById("tituloCapitulo");
+const contenidoEl = document.getElementById("contenidoCapitulo");
 
-let editId = null;
+fetch("/api/capitulos")
+  .then(res => res.json())
+  .then(capitulos => {
+    const capitulo = capitulos[index];
 
-logoutBtn.onclick = () => {
-  localStorage.removeItem("token");
-  location.href = "/";
-};
+    if (!capitulo || !capitulo.paginas || capitulo.paginas.length === 0) {
+      contenidoEl.innerHTML = "<p>Este capítulo aún no tiene contenido.</p>";
+      return;
+    }
 
-async function cargarCapitulos() {
-  const res = await fetch("/api/editor/capitulos", {
-    headers: { Authorization: `Bearer ${token}` }
+    tituloEl.textContent = capitulo.titulo;
+
+    const textoCompleto = capitulo.paginas.join("\n\n---\n\n");
+
+    renderizarContenido(textoCompleto);
+  })
+  .catch(err => {
+    contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
+    console.error(err);
   });
-  const capitulos = await res.json();
 
-  lista.innerHTML = "";
+function renderizarContenido(texto) {
+  contenidoEl.innerHTML = "";
 
-  capitulos.forEach(c => {
-    const div = document.createElement("div");
-    div.className = "capitulo-item";
-    div.innerHTML = `
-      <h3>${c.titulo}</h3>
-      <div class="capitulo-acciones">
-        <button class="btn-editar">Editar</button>
-        <button class="btn-borrar">Borrar</button>
-      </div>
-    `;
+  const bloques = texto.split(/\n*---+\n*/);
 
-    div.querySelector(".btn-editar").onclick = () => editar(c);
-    div.querySelector(".btn-borrar").onclick = () => borrar(c.id);
+  bloques.forEach((bloque, i) => {
+    const parrafos = bloque
+      .split(/\n+/)
+      .map(p => p.trim())
+      .filter(p => p !== "");
 
-    lista.appendChild(div);
+    parrafos.forEach(parrafo => {
+      const p = document.createElement("p");
+      p.textContent = parrafo;
+      contenidoEl.appendChild(p);
+    });
+
+    if (i < bloques.length - 1) {
+      const separador = document.createElement("div");
+      separador.className = "separador";
+      separador.textContent = "✦ ✦ ✦";
+      contenidoEl.appendChild(separador);
+    }
   });
 }
 
-function editar(c) {
-  editId = c.id;
-  titulo.value = c.titulo;
-  descripcion.value = c.descripcion || "";
-  contenido.value = c.paginas.join("\n\n");
-  fecha.value = c.fecha ? c.fecha.slice(0,16) : "";
+/* ==================================================
+   CÓDIGO AGREGADO – EDITOR ENRIQUECIDO
+================================================== */
+
+const editorVisual = document.getElementById("editorVisual");
+const textareaContenido = document.getElementById("contenido");
+
+document.querySelectorAll(".editor-toolbar button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.execCommand(btn.dataset.cmd);
+    sincronizar();
+  });
+});
+
+document.getElementById("fontColor").addEventListener("input", e => {
+  document.execCommand("foreColor", false, e.target.value);
+  sincronizar();
+});
+
+document.getElementById("fontFamily").addEventListener("change", e => {
+  document.execCommand("fontName", false, e.target.value);
+  sincronizar();
+});
+
+document.getElementById("fontSize").addEventListener("change", e => {
+  document.execCommand("fontSize", false, e.target.value);
+  sincronizar();
+});
+
+function sincronizar() {
+  const textoPlano = editorVisual.innerHTML
+    .replace(/<div>/gi, "\n")
+    .replace(/<\/div>/gi, "")
+    .replace(/<br>/gi, "\n")
+    .replace(/<[^>]*>/g, "");
+
+  textareaContenido.value = textoPlano;
 }
 
-async function borrar(id) {
-  if (!confirm("¿Eliminar capítulo?")) return;
-
-  await fetch(`/api/capitulos/${id}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` }
-  });
-
-  cargarCapitulos();
-}
-
-publicarBtn.onclick = async () => {
-  const data = {
-    titulo: titulo.value,
-    descripcion: descripcion.value,
-    paginas: [contenido.value],
-    fecha: fecha.value
-  };
-
-  const url = editId ? `/api/capitulos/${editId}` : "/api/capitulos";
-  const method = editId ? "PUT" : "POST";
-
-  await fetch(url, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(data)
-  });
-
-  mensaje.textContent = "Guardado correctamente";
-  editId = null;
-  titulo.value = descripcion.value = contenido.value = fecha.value = "";
-  cargarCapitulos();
-};
-
-cargarCapitulos();
+editorVisual.addEventListener("input", sincronizar);
