@@ -161,3 +161,51 @@
     font-size: 1.6rem;
   }
 }
+
+/* =========================
+   LISTA DE CAPÍTULOS
+========================= */
+
+.lista-capitulos {
+  margin-top: 60px;
+}
+
+.lista-capitulos h2 {
+  margin-bottom: 20px;
+  color: #2f3e34;
+}
+
+.capitulo-item {
+  background: #f4f6f1;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.capitulo-item h3 {
+  margin-bottom: 10px;
+}
+
+.capitulo-acciones {
+  display: flex;
+  gap: 12px;
+}
+
+.capitulo-acciones button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background: #8b6b4a;
+  color: white;
+}
+
+.btn-borrar {
+  background: #9b3a3a;
+  color: white;
+}
+

@@ -13,61 +13,53 @@
 
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div class="brand">
-      <span class="brand-title">Panel del autor</span>
+<header>
+  <div class="brand">
+    <span class="brand-title">Panel del autor</span>
+  </div>
+
+  <nav>
+    <a href="index.html">Volver al libro</a>
+    <a href="#" id="logoutBtn" class="logout-btn">Cerrar sesión</a>
+  </nav>
+</header>
+
+<main class="editor-container">
+
+  <h1>Nuevo / Editar capítulo</h1>
+  <p id="mensaje"></p>
+
+  <section class="nuevo-capitulo">
+
+    <label>Título</label>
+    <input id="titulo" class="input-titulo" type="text">
+
+    <label>Descripción</label>
+    <textarea id="descripcion" class="input-descripcion"></textarea>
+
+    <label>Contenido</label>
+    <textarea id="contenido" class="editor-texto"></textarea>
+
+    <label>Fecha de publicación</label>
+    <input id="fecha" type="datetime-local" class="input-fecha">
+
+    <div class="acciones">
+      <button id="publicarBtn" class="btn-publicar">Guardar</button>
     </div>
 
-    <nav>
-      <a href="index.html">Volver al libro</a>
-      <a href="#" id="logoutBtn" class="logout-btn">Cerrar sesión</a>
-    </nav>
-  </header>
+  </section>
 
-  <!-- MAIN -->
-  <main class="editor-container">
+  <section class="lista-capitulos">
+    <h2>Capítulos existentes</h2>
+    <div id="listaCapitulos"></div>
+  </section>
 
-    <h1>Nuevo capítulo</h1>
+</main>
 
-    <!-- MENSAJES -->
-    <p id="mensaje"></p>
+<footer>
+  <p>Panel privado del autor</p>
+</footer>
 
-    <section class="nuevo-capitulo">
-
-      <label for="titulo">Título del capítulo</label>
-      <input id="titulo" class="input-titulo" type="text" placeholder="Ej: Capítulo 1 – Lo que nadie dijo">
-
-      <label for="descripcion">Descripción del capítulo</label>
-      <textarea id="descripcion" class="input-descripcion" rows="3" maxlength="200"
-        placeholder="Breve descripción..."></textarea>
-
-      <small class="contador-descripcion">0 / 200</small>
-
-      <label for="contenido">Contenido del capítulo</label>
-      <textarea id="contenido" class="editor-texto" placeholder="Escribe aquí el capítulo completo..."></textarea>
-
-      <div class="acciones">
-        <button id="publicarBtn" class="btn-publicar" type="button">
-          Publicar ahora
-        </button>
-      </div>
-
-    </section>
-
-
-    <!-- PREVIEW (OCULTO) -->
-    <div id="preview" style="display:none;"></div>
-
-  </main>
-
-  <footer>
-    <p>Panel privado del autor</p>
-  </footer>
-
-  <!-- JS AL FINAL -->
-  <script src="js/editor.js"></script>
-
+<script src="js/editor.js"></script>
 </body>
-
 </html>

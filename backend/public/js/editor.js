@@ -1,89 +1,91 @@
-// ===============================
-// 🔐 PROTECCIÓN DEL EDITOR
-// ===============================
 const token = localStorage.getItem("token");
+if (!token) location.href = "/login.html";
 
-if (!token) {
-  window.location.href = "/login.html";
-}
-
-// ===============================
-// 📌 ELEMENTOS
-// ===============================
-const tituloInput = document.getElementById("titulo");
-const descripcionInput = document.getElementById("descripcion");
-const contenidoInput = document.getElementById("contenido");
-const preview = document.getElementById("preview");
+const titulo = document.getElementById("titulo");
+const descripcion = document.getElementById("descripcion");
+const contenido = document.getElementById("contenido");
+const fecha = document.getElementById("fecha");
 const mensaje = document.getElementById("mensaje");
+const lista = document.getElementById("listaCapitulos");
 const publicarBtn = document.getElementById("publicarBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
-// ===============================
-// 🔓 LOGOUT
-// ===============================
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("token");
-    window.location.href = "/";
+let editId = null;
+
+logoutBtn.onclick = () => {
+  localStorage.removeItem("token");
+  location.href = "/";
+};
+
+async function cargarCapitulos() {
+  const res = await fetch("/api/editor/capitulos", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const capitulos = await res.json();
+
+  lista.innerHTML = "";
+
+  capitulos.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "capitulo-item";
+    div.innerHTML = `
+      <h3>${c.titulo}</h3>
+      <div class="capitulo-acciones">
+        <button class="btn-editar">Editar</button>
+        <button class="btn-borrar">Borrar</button>
+      </div>
+    `;
+
+    div.querySelector(".btn-editar").onclick = () => editar(c);
+    div.querySelector(".btn-borrar").onclick = () => borrar(c.id);
+
+    lista.appendChild(div);
   });
 }
 
-// ===============================
-// 👁️ VISTA PREVIA (BÁSICA)
-// ===============================
-if (contenidoInput && preview) {
-  contenidoInput.addEventListener("input", () => {
-    preview.textContent = contenidoInput.value;
-  });
+function editar(c) {
+  editId = c.id;
+  titulo.value = c.titulo;
+  descripcion.value = c.descripcion || "";
+  contenido.value = c.paginas.join("\n\n");
+  fecha.value = c.fecha ? c.fecha.slice(0,16) : "";
 }
 
-// ===============================
-// ✍️ PUBLICAR CAPÍTULO
-// ===============================
-if (publicarBtn) {
-  publicarBtn.addEventListener("click", async () => {
-    const titulo = tituloInput.value.trim();
-    const descripcion = descripcionInput.value.trim();
-    const contenido = contenidoInput.value.trim();
+async function borrar(id) {
+  if (!confirm("¿Eliminar capítulo?")) return;
 
-    if (!titulo || !contenido) {
-      mensaje.textContent = "El título y el contenido son obligatorios";
-      mensaje.style.color = "red";
-      return;
-    }
-
-    const nuevoCapitulo = {
-      titulo,
-      descripcion,
-      paginas: [contenido]
-    };
-
-    try {
-      const response = await fetch("/api/capitulos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(nuevoCapitulo)
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al publicar");
-      }
-
-      mensaje.textContent = "Capítulo publicado correctamente";
-      mensaje.style.color = "green";
-
-      tituloInput.value = "";
-      descripcionInput.value = "";
-      contenidoInput.value = "";
-      preview.textContent = "";
-
-    } catch (error) {
-      mensaje.textContent = "Error al publicar el capítulo";
-      mensaje.style.color = "red";
-      console.error(error);
-    }
+  await fetch(`/api/capitulos/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` }
   });
+
+  cargarCapitulos();
 }
+
+publicarBtn.onclick = async () => {
+  const data = {
+    titulo: titulo.value,
+    descripcion: descripcion.value,
+    paginas: [contenido.value],
+    fecha: fecha.value
+  };
+
+  const url = editId ? `/api/capitulos/${editId}` : "/api/capitulos";
+  const method = editId ? "PUT" : "POST";
+
+  await fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(data)
+  });
+
+  mensaje.textContent = "Guardado correctamente";
+  editId = null;
+  titulo.value = descripcion.value = contenido.value = fecha.value = "";
+  cargarCapitulos();
+};
+
+cargarCapitulos();

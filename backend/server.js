@@ -25,20 +25,15 @@ const pool = new Pool({
 
 // Crear tabla si no existe
 (async () => {
-  try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS capitulos (
-        id SERIAL PRIMARY KEY,
-        titulo TEXT NOT NULL,
-        descripcion TEXT,
-        paginas TEXT[],
-        fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-    console.log("Tabla capitulos lista");
-  } catch (err) {
-    console.error("Error DB:", err);
-  }
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS capitulos (
+      id SERIAL PRIMARY KEY,
+      titulo TEXT NOT NULL,
+      descripcion TEXT,
+      paginas TEXT[],
+      fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
 })();
 
 // =======================
@@ -66,9 +61,8 @@ app.post("/api/login", async (req, res) => {
     return res.status(401).json({ mensaje: "Credenciales incorrectas" });
   }
 
-  const isValid = await bcrypt.compare(password, AUTHOR_PASSWORD_HASH);
-
-  if (!isValid) {
+  const ok = await bcrypt.compare(password, AUTHOR_PASSWORD_HASH);
+  if (!ok) {
     return res.status(401).json({ mensaje: "Credenciales incorrectas" });
   }
 
@@ -77,20 +71,32 @@ app.post("/api/login", async (req, res) => {
 });
 
 // =======================
-// 🔒 AUTH MIDDLEWARE
+// 🔒 AUTH
 // =======================
 function authMiddleware(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || authHeader !== `Bearer ${activeToken}`) {
+  const auth = req.headers.authorization;
+  if (!auth || auth !== `Bearer ${activeToken}`) {
     return res.status(403).json({ mensaje: "No autorizado" });
   }
   next();
 }
 
 // =======================
-// 📚 CAPÍTULOS
+// 📚 CAPÍTULOS (PÚBLICO)
 // =======================
 app.get("/api/capitulos", async (req, res) => {
+  const result = await pool.query(`
+    SELECT * FROM capitulos
+    WHERE fecha <= NOW()
+    ORDER BY fecha DESC
+  `);
+  res.json(result.rows);
+});
+
+// =======================
+// 📚 CAPÍTULOS (EDITOR)
+// =======================
+app.get("/api/editor/capitulos", authMiddleware, async (req, res) => {
   const result = await pool.query(
     "SELECT * FROM capitulos ORDER BY fecha DESC"
   );
@@ -98,19 +104,39 @@ app.get("/api/capitulos", async (req, res) => {
 });
 
 app.post("/api/capitulos", authMiddleware, async (req, res) => {
-  const { titulo, descripcion, paginas } = req.body;
+  const { titulo, descripcion, paginas, fecha } = req.body;
 
   await pool.query(
-    "INSERT INTO capitulos (titulo, descripcion, paginas) VALUES ($1, $2, $3)",
-    [titulo, descripcion, paginas]
+    `INSERT INTO capitulos (titulo, descripcion, paginas, fecha)
+     VALUES ($1,$2,$3,$4)`,
+    [titulo, descripcion, paginas, fecha || new Date()]
   );
 
   res.status(201).json({ mensaje: "Capítulo publicado" });
+});
+
+app.put("/api/capitulos/:id", authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const { titulo, descripcion, paginas, fecha } = req.body;
+
+  await pool.query(
+    `UPDATE capitulos
+     SET titulo=$1, descripcion=$2, paginas=$3, fecha=$4
+     WHERE id=$5`,
+    [titulo, descripcion, paginas, fecha, id]
+  );
+
+  res.json({ mensaje: "Capítulo actualizado" });
+});
+
+app.delete("/api/capitulos/:id", authMiddleware, async (req, res) => {
+  await pool.query("DELETE FROM capitulos WHERE id=$1", [req.params.id]);
+  res.json({ mensaje: "Capítulo eliminado" });
 });
 
 // =======================
 // 🚀 SERVER
 // =======================
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log("Servidor listo");
 });
