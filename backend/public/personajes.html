@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="css/personajes.css">
   <link rel="shortcut icon" href="assets/img/icon.png" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
 </head>
 <body>
 
@@ -24,7 +23,7 @@
 
 <main class="personajes-container">
 
-  <section class="personaje-card">
+  <section class="personaje-card" data-url="personajes/evelin.html">
     <img src="assets/img/evelin.png" alt="Evelin">
     <h3>Evelin</h3>
     <p>
@@ -33,7 +32,7 @@
     </p>
   </section>
 
-  <section class="personaje-card">
+  <section class="personaje-card" data-url="personajes/steven.html">
     <img src="assets/img/steven.png" alt="Steven">
     <h3>Steven</h3>
     <p>
@@ -42,7 +41,7 @@
     </p>
   </section>
 
-  <section class="personaje-card">
+  <section class="personaje-card" data-url="personajes/david.html">
     <img src="assets/img/david.png" alt="David">
     <h3>David</h3>
     <p>
@@ -51,7 +50,7 @@
     </p>
   </section>
 
-  <section class="personaje-card">
+  <section class="personaje-card" data-url="personajes/madison.html">
     <img src="assets/img/madison.png" alt="Madison">
     <h3>Madison</h3>
     <p>
@@ -60,7 +59,7 @@
     </p>
   </section>
 
-  <section class="personaje-card">
+  <section class="personaje-card" data-url="personajes/mark.html">
     <img src="assets/img/mark.jpg" alt="Mark">
     <h3>Mark</h3>
     <p>
@@ -69,7 +68,7 @@
     </p>
   </section>
 
-  <section class="personaje-card">
+  <section class="personaje-card" data-url="personajes/catalina.html">
     <img src="assets/img/catalina.jpg" alt="Catalina">
     <h3>Catalina</h3>
     <p>
@@ -83,6 +82,18 @@
 <footer>
   <p>Proyecto personal</p>
 </footer>
+
+<!-- JS -->
+<script>
+  document.querySelectorAll('.personaje-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const url = card.dataset.url;
+      if (url) {
+        window.location.href = url;
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
