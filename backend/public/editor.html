@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel del autor | Confesiones</title>
-
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/editor.css">
   <link rel="shortcut icon" href="assets/img/icon.png" type="image/x-icon">
@@ -13,79 +12,73 @@
 
 <body>
 
-<header>
-  <div class="brand">
-    <span class="brand-title">Panel del autor</span>
-  </div>
-
-  <nav>
-    <a href="index.html">Volver al libro</a>
-    <a href="#" id="logoutBtn" class="logout-btn">Cerrar sesión</a>
-  </nav>
-</header>
-
-<main class="editor-container">
-
-  <h1>Nuevo / Editar capítulo</h1>
-  <p id="mensaje"></p>
-
-  <section class="nuevo-capitulo">
-
-    <label>Título</label>
-    <input id="titulo" class="input-titulo" type="text">
-
-    <label>Descripción</label>
-    <textarea id="descripcion" class="input-descripcion"></textarea>
-
-    <label>Contenido</label>
-
-    <!-- ===== BARRA DE FORMATO (AGREGADA) ===== -->
-    <div class="editor-toolbar">
-      <select id="fontFamily">
-        <option value="Georgia">Georgia</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Arial">Arial</option>
-      </select>
-
-      <select id="fontSize">
-        <option value="3">Normal</option>
-        <option value="4">Grande</option>
-        <option value="5">Muy grande</option>
-      </select>
-
-      <input type="color" id="fontColor">
-
-      <button type="button" data-cmd="bold"><b>B</b></button>
-      <button type="button" data-cmd="italic"><i>I</i></button>
-      <button type="button" data-cmd="underline"><u>U</u></button>
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <span class="brand-title">Panel del autor</span>
     </div>
 
-    <!-- ===== EDITOR VISUAL (AGREGADO) ===== -->
-    <div id="editorVisual" class="editor-visual" contenteditable="true"></div>
+    <nav>
+      <a href="index.html">Volver al libro</a>
+      <a href="#" class="logout-btn">Cerrar sesión</a>
+    </nav>
+  </header>
 
-    <!-- ===== TU TEXTAREA ORIGINAL (SIN CAMBIOS) ===== -->
-    <textarea id="contenido" class="editor-texto"></textarea>
+  <!-- MAIN -->
+  <main class="editor-container">
 
-    <label>Fecha de publicación</label>
-    <input id="fecha" type="datetime-local" class="input-fecha">
+    <h1>Nuevo capítulo</h1>
 
-    <div class="acciones">
-      <button id="publicarBtn" class="btn-publicar">Guardar</button>
-    </div>
+    <!-- FORMULARIO -->
+    <section class="nuevo-capitulo">
 
-  </section>
+      <label for="titulo">Título del capítulo</label>
+      <input id="titulo" type="text" class="input-titulo"
+        placeholder="Ej: Capítulo 1 – Lo que nadie dijo">
 
-  <section class="lista-capitulos">
-    <h2>Capítulos existentes</h2>
-    <div id="listaCapitulos"></div>
-  </section>
+      <label for="descripcion">Descripción del capítulo</label>
+      <textarea id="descripcion" class="input-descripcion" rows="3" maxlength="200"
+        placeholder="Breve descripción que se mostrará en la página principal..."></textarea>
 
-</main>
+      <small class="contador-descripcion">0 / 200</small>
 
-<footer>
-  <p>Panel privado del autor</p>
-</footer>
+      <label for="contenido">Contenido del capítulo</label>
+      <textarea id="contenido" class="editor-texto"
+        placeholder="Escribe aquí el capítulo completo...&#10;&#10;Usa --- para separar páginas"></textarea>
 
-<script src="js/editor.js"></script>
+      <label for="fecha">Fecha de publicación</label>
+      <input id="fecha" type="datetime-local" class="input-fecha">
+
+      <div class="acciones">
+        <button class="btn-preview" type="button">Vista previa</button>
+        <button class="btn-publicar" type="button">Publicar ahora</button>
+        <button class="btn-programar" type="button">Guardar y programar</button>
+      </div>
+
+    </section>
+
+    <!-- VISTA PREVIA -->
+    <section class="preview-capitulo hidden">
+
+      <h2 class="preview-titulo"></h2>
+
+      <p class="preview-descripcion"></p>
+
+      <div class="preview-paginas">
+        <!-- Páginas generadas por JS -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Panel privado del autor</p>
+  </footer>
+
+  <script src="js/editor.js"></script>
+
 </body>
+
 </html>

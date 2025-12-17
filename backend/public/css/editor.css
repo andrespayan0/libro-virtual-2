@@ -1,146 +1,160 @@
-/* =========================
-   CONTENEDOR GENERAL
-========================= */
-.capitulo-container {
-  max-width: 1100px;
-  margin: 120px auto;
-  padding: 0 32px;
+.editor-container {
+  max-width: 900px;
+  margin: 90px auto;
+  padding: 0 24px;
 }
 
-/* =========================
-   TÍTULO
-========================= */
-.capitulo-titulo {
-  text-align: center;
-  font-size: 2.4rem;
+.editor-container h1 {
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   color: #2f3e34;
 }
 
-/* =========================
-   TARJETA ÚNICA
-========================= */
-.pagina-capitulo {
-  background: linear-gradient(180deg, #ffffff, #f3f5f0);
-  border-radius: 28px;
-  padding: 56px 64px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+/* FORM */
+.nuevo-capitulo {
+  background: linear-gradient(180deg, #f4f6f1, #e2efe6);
+  border-radius: 22px;
+  padding: 36px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
 }
 
-/* =========================
-   TEXTO
-========================= */
-.pagina-capitulo p {
-  font-family: "Georgia", "Times New Roman", serif;
-  font-size: 1.05rem;
-  line-height: 2;
-  color: #3e3e3e;
-  margin-bottom: 28px;
-}
-
-/* =========================
-   SEPARADOR ---
-========================= */
-.separador {
-  text-align: center;
-  margin: 48px 0;
+.nuevo-capitulo label {
+  display: block;
+  margin-bottom: 8px;
   font-size: 0.9rem;
-  letter-spacing: 6px;
-  color: #8b6b4a;
+  color: #3e4a42;
 }
 
-/* BOTÓN VOLVER */
-.btn-volver {
-  display: inline-block;
-  margin-bottom: 28px;
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #2f6f4e;
-  background-color: rgba(47, 111, 78, 0.08);
+/* INPUTS */
+.input-titulo,
+.input-fecha,
+.input-descripcion {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  border: 1px solid #cfd8cf;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.input-descripcion {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+/* TEXTAREA PRINCIPAL */
+.editor-texto {
+  width: 100%;
+  min-height: 280px;
+  padding: 14px;
+  margin-bottom: 26px;
   border-radius: 14px;
-  text-decoration: none;
-  transition: all 0.25s ease;
+  border: 1px solid #cfd8cf;
+  resize: vertical;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-family: inherit;
 }
 
-.btn-volver:hover {
-  background-color: rgba(47, 111, 78, 0.16);
-  transform: translateX(-3px);
+/* ACTIONS */
+.acciones {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
 }
 
-/* =========================
-   RESPONSIVE – AGREGADO
-========================= */
-
-@media (max-width: 900px) {
-  .pagina-capitulo {
-    padding: 44px 40px;
-  }
+.btn-publicar,
+.btn-programar {
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.btn-publicar {
+  background-color: #2f6f4e;
+  color: #fff;
+}
+
+.btn-programar {
+  background-color: #8b6b4a;
+  color: #fff;
+}
+
+.btn-publicar:hover,
+.btn-programar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* CONTADOR */
+.contador-descripcion {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  margin-bottom: 24px;
+  color: #6b7a70;
+}
+
+/* PREVIEW */
+.preview-capitulo {
+  margin-top: 48px;
+  background: #f4f6f1;
+  border-radius: 22px;
+  padding: 36px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.preview-capitulo h2 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  color: #2f3e34;
+}
+
+.preview-descripcion {
+  font-size: 1rem;
+  margin-bottom: 32px;
+  color: #4a5a51;
+}
+
+.preview-paginas .pagina {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 24px;
+  line-height: 1.7;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.hidden {
+  display: none;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .capitulo-container {
-    margin: 90px auto;
-    padding: 0 24px;
+  .nuevo-capitulo,
+  .preview-capitulo {
+    padding: 28px;
   }
 
-  .pagina-capitulo {
-    padding: 36px 28px;
-  }
-
-  .capitulo-titulo {
-    font-size: 2rem;
-    margin-bottom: 40px;
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
 @media (max-width: 480px) {
-  .pagina-capitulo p {
-    font-size: 1rem;
-    line-height: 1.8;
+  .editor-container {
+    margin: 70px auto;
+    padding: 0 16px;
   }
-}
 
-/* ==================================================
-   ⬇⬇⬇ TODO LO DE ABAJO ES NUEVO ⬇⬇⬇
-   EDITOR DE TEXTO ENRIQUECIDO
-================================================== */
-
-.editor-toolbar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.editor-toolbar select,
-.editor-toolbar input,
-.editor-toolbar button {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: #fff;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.editor-visual {
-  min-height: 300px;
-  padding: 18px;
-  border-radius: 16px;
-  border: 1px solid #ccc;
-  background: #ffffff;
-  font-family: Georgia, serif;
-  line-height: 2;
-  font-size: 1.05rem;
-  color: #3e3e3e;
-  margin-bottom: 16px;
-}
-
-/* Textarea original:
-   NO se elimina
-   SOLO se oculta visualmente */
-.editor-texto {
-  display: none;
+  .editor-container h1 {
+    font-size: 1.6rem;
+  }
 }

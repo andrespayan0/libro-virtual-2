@@ -1,93 +1,85 @@
-const params = new URLSearchParams(window.location.search);
-const index = params.get("id");
+// ===============================
+// 🔐 PROTECCIÓN DEL EDITOR
+// ===============================
+const token = localStorage.getItem("token");
 
-const tituloEl = document.getElementById("tituloCapitulo");
-const contenidoEl = document.getElementById("contenidoCapitulo");
+if (!token) {
+  window.location.href = "login.html";
+}
 
-fetch("/api/capitulos")
-  .then(res => res.json())
-  .then(capitulos => {
-    const capitulo = capitulos[index];
+// ===============================
+// 📌 ELEMENTOS
+// ===============================
+const tituloInput = document.getElementById("titulo");
+const descripcionInput = document.getElementById("descripcion");
+const contenidoInput = document.getElementById("contenido");
+const preview = document.getElementById("preview");
+const mensaje = document.getElementById("mensaje");
+const publicarBtn = document.getElementById("publicarBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
-    if (!capitulo || !capitulo.paginas || capitulo.paginas.length === 0) {
-      contenidoEl.innerHTML = "<p>Este capítulo aún no tiene contenido.</p>";
-      return;
-    }
+// ===============================
+// 🔓 LOGOUT
+// ===============================
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location.href = "index.html";
+});
 
-    tituloEl.textContent = capitulo.titulo;
 
-    const textoCompleto = capitulo.paginas.join("\n\n---\n\n");
+// ===============================
+// 👁️ VISTA PREVIA
+// ===============================
+contenidoInput.addEventListener("input", () => {
+  preview.textContent = contenidoInput.value;
+});
 
-    renderizarContenido(textoCompleto);
-  })
-  .catch(err => {
-    contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
-    console.error(err);
-  });
+// ===============================
+// ✍️ PUBLICAR CAPÍTULO
+// ===============================
+publicarBtn.addEventListener("click", async () => {
+  const titulo = tituloInput.value.trim();
+  const descripcion = descripcionInput.value.trim();
+  const contenido = contenidoInput.value.trim();
 
-function renderizarContenido(texto) {
-  contenidoEl.innerHTML = "";
+  if (!titulo || !contenido) {
+    mensaje.textContent = "El título y el contenido son obligatorios";
+    mensaje.style.color = "red";
+    return;
+  }
 
-  const bloques = texto.split(/\n*---+\n*/);
+  const nuevoCapitulo = {
+    titulo,
+    descripcion,
+    paginas: [contenido]
+  };
 
-  bloques.forEach((bloque, i) => {
-    const parrafos = bloque
-      .split(/\n+/)
-      .map(p => p.trim())
-      .filter(p => p !== "");
-
-    parrafos.forEach(parrafo => {
-      const p = document.createElement("p");
-      p.textContent = parrafo;
-      contenidoEl.appendChild(p);
+  try {
+    const response = await fetch("/api/capitulos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(nuevoCapitulo)
     });
 
-    if (i < bloques.length - 1) {
-      const separador = document.createElement("div");
-      separador.className = "separador";
-      separador.textContent = "✦ ✦ ✦";
-      contenidoEl.appendChild(separador);
+    if (!response.ok) {
+      throw new Error("Error al publicar");
     }
-  });
-}
 
-/* ==================================================
-   CÓDIGO AGREGADO – EDITOR ENRIQUECIDO
-================================================== */
+    mensaje.textContent = "Capítulo publicado correctamente";
+    mensaje.style.color = "green";
 
-const editorVisual = document.getElementById("editorVisual");
-const textareaContenido = document.getElementById("contenido");
+    // LIMPIAR FORMULARIO
+    tituloInput.value = "";
+    descripcionInput.value = "";
+    contenidoInput.value = "";
+    preview.textContent = "";
 
-document.querySelectorAll(".editor-toolbar button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.execCommand(btn.dataset.cmd);
-    sincronizar();
-  });
+  } catch (error) {
+    mensaje.textContent = "Error al publicar el capítulo";
+    mensaje.style.color = "red";
+    console.error(error);
+  }
 });
-
-document.getElementById("fontColor").addEventListener("input", e => {
-  document.execCommand("foreColor", false, e.target.value);
-  sincronizar();
-});
-
-document.getElementById("fontFamily").addEventListener("change", e => {
-  document.execCommand("fontName", false, e.target.value);
-  sincronizar();
-});
-
-document.getElementById("fontSize").addEventListener("change", e => {
-  document.execCommand("fontSize", false, e.target.value);
-  sincronizar();
-});
-
-function sincronizar() {
-  const textoPlano = editorVisual.innerHTML
-    .replace(/<div>/gi, "\n")
-    .replace(/<\/div>/gi, "")
-    .replace(/<br>/gi, "\n")
-    .replace(/<[^>]*>/g, "");
-
-  textareaContenido.value = textoPlano;
-}
-
-editorVisual.addEventListener("input", sincronizar);
