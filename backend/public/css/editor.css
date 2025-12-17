@@ -1,0 +1,163 @@
+.editor-container {
+  max-width: 900px;
+  margin: 90px auto;
+  padding: 0 24px;
+}
+
+.editor-container h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #2f3e34;
+}
+
+/* FORM */
+.nuevo-capitulo {
+  background: linear-gradient(180deg, #f4f6f1, #e2efe6);
+  border-radius: 22px;
+  padding: 36px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.nuevo-capitulo label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #3e4a42;
+}
+
+/* INPUTS */
+.input-titulo,
+.input-fecha,
+.input-descripcion {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  border: 1px solid #cfd8cf;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.input-descripcion {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+/* TEXTAREA PRINCIPAL */
+.editor-texto {
+  width: 100%;
+  min-height: 280px;
+  padding: 14px;
+  margin-bottom: 26px;
+  border-radius: 14px;
+  border: 1px solid #cfd8cf;
+  resize: vertical;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-family: inherit;
+}
+
+/* ACTIONS */
+.acciones {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.btn-publicar,
+.btn-programar {
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-publicar {
+  background-color: #2f6f4e;
+  color: #fff;
+}
+
+.btn-programar {
+  background-color: #8b6b4a;
+  color: #fff;
+}
+
+.btn-publicar:hover,
+.btn-programar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* CONTADOR */
+.contador-descripcion {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  margin-bottom: 24px;
+  color: #6b7a70;
+}
+
+/* PREVIEW */
+.preview-capitulo {
+  margin-top: 48px;
+  background: #f4f6f1;
+  border-radius: 22px;
+  padding: 36px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.preview-capitulo h2 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  color: #2f3e34;
+}
+
+.preview-descripcion {
+  font-size: 1rem;
+  margin-bottom: 32px;
+  color: #4a5a51;
+}
+
+.preview-paginas .pagina {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 24px;
+  line-height: 1.7;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================
+   RESPONSIVE – AGREGADO
+========================= */
+
+@media (max-width: 768px) {
+  .nuevo-capitulo,
+  .preview-capitulo {
+    padding: 28px;
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-container {
+    margin: 70px auto;
+    padding: 0 16px;
+  }
+
+  .editor-container h1 {
+    font-size: 1.6rem;
+  }
+}

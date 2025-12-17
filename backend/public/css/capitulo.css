@@ -1,0 +1,103 @@
+/* =========================
+   CONTENEDOR GENERAL
+========================= */
+.capitulo-container {
+  max-width: 1100px;
+  margin: 120px auto;
+  padding: 0 32px;
+}
+
+/* =========================
+   TÍTULO
+========================= */
+.capitulo-titulo {
+  text-align: center;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 60px;
+  color: #2f3e34;
+}
+
+/* =========================
+   TARJETA ÚNICA
+========================= */
+.pagina-capitulo {
+  background: linear-gradient(180deg, #ffffff, #f3f5f0);
+  border-radius: 28px;
+  padding: 56px 64px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   TEXTO
+========================= */
+.pagina-capitulo p {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 2;
+  color: #3e3e3e;
+  margin-bottom: 28px;
+}
+
+/* =========================
+   SEPARADOR ---
+========================= */
+.separador {
+  text-align: center;
+  margin: 48px 0;
+  font-size: 0.9rem;
+  letter-spacing: 6px;
+  color: #8b6b4a;
+}
+
+/* BOTÓN VOLVER */
+.btn-volver {
+  display: inline-block;
+  margin-bottom: 28px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2f6f4e;
+  background-color: rgba(47, 111, 78, 0.08);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn-volver:hover {
+  background-color: rgba(47, 111, 78, 0.16);
+  transform: translateX(-3px);
+}
+
+/* =========================
+   RESPONSIVE – AGREGADO
+========================= */
+
+@media (max-width: 900px) {
+  .pagina-capitulo {
+    padding: 44px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .capitulo-container {
+    margin: 90px auto;
+    padding: 0 24px;
+  }
+
+  .pagina-capitulo {
+    padding: 36px 28px;
+  }
+
+  .capitulo-titulo {
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagina-capitulo p {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+}

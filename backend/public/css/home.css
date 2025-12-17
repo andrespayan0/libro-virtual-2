@@ -1,0 +1,126 @@
+.home-container {
+  max-width: 1100px;
+  margin: 90px auto;
+  padding: 0 24px;
+}
+
+/* INTRO */
+.intro-libro {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.titulo-libro {
+  font-size: 3.4rem;
+  font-weight: 400;
+  margin-bottom: 18px;
+  background: linear-gradient(90deg, #2f6f4e, #8b6b4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.descripcion-libro {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #4a4a4a;
+}
+
+/* CAPITULOS */
+.capitulos-lista {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sin-capitulos {
+  font-size: 0.95rem;
+  color: #777;
+  font-style: italic;
+}
+
+/* ===========================
+   LISTA DE CAPÍTULOS
+=========================== */
+
+.capitulos-lista {
+  max-width: 900px;
+  margin: 80px auto 120px;
+  display: grid;
+  gap: 28px;
+}
+
+/* MENSAJE SIN CAPÍTULOS */
+.sin-capitulos {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #7a857d;
+}
+
+/* ===========================
+   TARJETA DE CAPÍTULO
+=========================== */
+
+.capitulo-card {
+  background: linear-gradient(180deg, #f4f6f1, #e2efe6);
+  border-radius: 22px;
+  padding: 28px 32px;
+  cursor: pointer;
+  transition: 
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.capitulo-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* TÍTULO */
+.capitulo-card h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #2f3e34;
+  margin-bottom: 10px;
+}
+
+/* DESCRIPCIÓN */
+.capitulo-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #4a5a50;
+}
+
+/* FECHA */
+.capitulo-fecha {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: #7a857d;
+}
+
+/* =========================
+   RESPONSIVE – AGREGADO
+========================= */
+
+@media (max-width: 768px) {
+  .titulo-libro {
+    font-size: 2.6rem;
+  }
+
+  .capitulo-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    margin: 70px auto;
+    padding: 0 16px;
+  }
+
+  .titulo-libro {
+    font-size: 2.2rem;
+  }
+}
