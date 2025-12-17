@@ -41,15 +41,28 @@
       <div class="toolbar">
         <button data-cmd="bold">B</button>
         <button data-cmd="italic">I</button>
-        <button data-cmd="indent">↦</button>
+        <button data-cmd="underline">U</button>
+        <button data-cmd="strikeThrough">S</button>
+
         <select id="fontSize">
           <option value="3">Normal</option>
           <option value="4">Grande</option>
           <option value="5">Muy grande</option>
         </select>
-      </div>
 
-      <div id="contenido" class="editor-texto editor-rich" contenteditable="true"></div>
+        <button data-cmd="justifyLeft">⯇</button>
+        <button data-cmd="justifyCenter">≡</button>
+        <button data-cmd="justifyRight">⯈</button>
+
+        <button data-cmd="insertUnorderedList">• Lista</button>
+        <button data-cmd="insertOrderedList">1. Lista</button>
+
+        <button data-cmd="indent">↦</button>
+        <button data-cmd="outdent">↤</button>
+
+        <button id="blockquote">"</button>
+        <button id="hr">—</button>
+      </div>
 
       <label>Fecha de publicación</label>
       <input id="fecha" type="datetime-local" class="input-fecha">

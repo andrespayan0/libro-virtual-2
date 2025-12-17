@@ -99,4 +99,26 @@ document.getElementById("fontSize").onchange = e => {
 };
 
 
+document.querySelectorAll(".toolbar button[data-cmd]").forEach(btn => {
+  btn.onclick = () => {
+    document.execCommand(btn.dataset.cmd, false, null);
+    contenido.focus();
+  };
+});
+
+fontSize.onchange = e => {
+  document.execCommand("fontSize", false, e.target.value);
+  contenido.focus();
+};
+
+document.getElementById("blockquote").onclick = () => {
+  document.execCommand("formatBlock", false, "blockquote");
+  contenido.focus();
+};
+
+document.getElementById("hr").onclick = () => {
+  document.execCommand("insertHorizontalRule");
+  contenido.focus();
+};
+
 cargarCapitulos();
