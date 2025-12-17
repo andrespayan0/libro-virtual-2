@@ -52,19 +52,14 @@ initDB();
 app.use(express.json());
 
 // =======================
-// FRONTEND (RUTA CORRECTA)
+// FRONTEND (PUBLIC)
 // =======================
-const frontendPath = path.join(__dirname, "..", "frontend");
+const publicPath = path.join(__dirname, "..", "public");
 
-console.log("Frontend path:", frontendPath);
+app.use(express.static(publicPath));
 
-app.use(express.static(frontendPath));
-
-// =======================
-// RUTAS
-// =======================
 app.get("/", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
+  res.sendFile(path.join(publicPath, "index.html"));
 });
 
 // =======================
