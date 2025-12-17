@@ -1,65 +1,62 @@
-html
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel del autor | Confesiones</title>
+  <title>Panel del autor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/editor.css">
 </head>
 <body>
+
 <header>
   <div class="brand"><span class="brand-title">Panel del autor</span></div>
   <nav>
     <a href="index.html">Volver</a>
-    <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+    <button id="logoutBtn">Cerrar sesión</button>
   </nav>
 </header>
 
 <main class="editor-container">
-<h1>Editor de capítulos</h1>
+  <h1>Editor de capítulos</h1>
 
-<section class="nuevo-capitulo">
+  <section class="nuevo-capitulo">
+    <select id="capitulosSelect" class="input-titulo"></select>
 
-<label>Capítulos existentes</label>
-<select id="capitulosSelect" class="input-titulo"></select>
+    <input id="titulo" class="input-titulo" placeholder="Título">
 
-<label>Título</label>
-<input id="titulo" class="input-titulo">
+    <textarea id="descripcion" class="input-descripcion" maxlength="200" placeholder="Descripción"></textarea>
+    <small id="contador">0 / 200</small>
 
-<label>Descripción</label>
-<textarea id="descripcion" class="input-descripcion" maxlength="200"></textarea>
-<small id="contador">0 / 200</small>
+    <div class="toolbar">
+      <button data-cmd="bold">B</button>
+      <button data-cmd="italic">I</button>
+      <button data-cmd="underline">U</button>
+      <button data-cmd="insertUnorderedList">•</button>
+      <button data-cmd="justifyLeft">⯇</button>
+      <button data-cmd="justifyCenter">≡</button>
+      <button data-cmd="justifyRight">⯈</button>
+      <select id="fontSize">
+        <option value="3">Normal</option>
+        <option value="4">Grande</option>
+        <option value="5">Muy grande</option>
+      </select>
+    </div>
 
-<label>Contenido</label>
-<div class="toolbar">
-  <button data-cmd="bold">B</button>
-  <button data-cmd="italic">I</button>
-  <button data-cmd="underline">U</button>
-  <button data-cmd="insertUnorderedList">•</button>
-  <button data-cmd="justifyLeft">⯇</button>
-  <button data-cmd="justifyCenter">≡</button>
-  <button data-cmd="justifyRight">⯈</button>
-  <select id="fontSize">
-    <option value="3">Normal</option>
-    <option value="4">Grande</option>
-    <option value="5">Muy grande</option>
-  </select>
-</div>
-<div id="editor" class="editor-texto" contenteditable="true"></div>
+    <div id="editor" class="editor-texto" contenteditable="true"></div>
 
-<div class="acciones">
-  <button id="previewBtn">Vista previa</button>
-  <button id="guardarBtn">Guardar</button>
-  <button id="eliminarBtn" class="danger">Eliminar</button>
-</div>
-</section>
+    <div class="acciones">
+      <button id="previewBtn">Vista previa</button>
+      <button id="guardarBtn">Guardar</button>
+      <button id="eliminarBtn" class="danger">Eliminar</button>
+    </div>
+  </section>
 
-<section id="preview" class="preview-capitulo hidden"></section>
+  <section id="preview" class="preview-capitulo hidden"></section>
 </main>
 
-<footer><p>Panel privado del autor</p></footer>
+<footer><p>Panel privado</p></footer>
+
 <script src="js/editor.js"></script>
 </body>
 </html>
