@@ -3,11 +3,30 @@ const index = params.get("id");
 
 const tituloEl = document.getElementById("tituloCapitulo");
 const contenidoEl = document.getElementById("contenidoCapitulo");
-const toggleDark = document.getElementById("toggleDark");
+const btnDark = document.getElementById("toggleDark");
+const btnVolver = document.querySelector(".btn-volver");
 
 // ====== DARK MODE ======
-const btnDark = document.getElementById("toggleDark");
+function aplicarModo() {
+  const dark = document.body.classList.contains("dark");
 
+  btnDark.style.backgroundColor = dark
+    ? "rgba(255,255,255,0.08)"
+    : "rgba(47,111,78,0.08)";
+  btnDark.style.color = dark ? "#eaeaea" : "#2f6f4e";
+
+  btnVolver.style.backgroundColor = dark
+    ? "rgba(255,255,255,0.08)"
+    : "rgba(47,111,78,0.08)";
+  btnVolver.style.color = dark ? "#eaeaea" : "#2f6f4e";
+
+  // texto
+  document.querySelectorAll(".pagina-capitulo p").forEach(p => {
+    p.style.color = dark ? "#f1f1f1" : "";
+  });
+}
+
+// estado guardado
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark");
 }
@@ -18,8 +37,8 @@ btnDark.onclick = () => {
     "darkMode",
     document.body.classList.contains("dark")
   );
+  aplicarModo();
 };
-
 
 // ====== CARGAR CAPÍTULO ======
 fetch("/api/capitulos")
@@ -29,12 +48,13 @@ fetch("/api/capitulos")
 
     if (!capitulo || !capitulo.paginas || capitulo.paginas.length === 0) {
       contenidoEl.innerHTML = "<p>Este capítulo aún no tiene contenido.</p>";
+      aplicarModo();
       return;
     }
 
     tituloEl.textContent = capitulo.titulo;
-
     renderizarContenido(capitulo.paginas.join("\n\n"));
+    aplicarModo();
   })
   .catch(err => {
     contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
@@ -45,21 +65,14 @@ fetch("/api/capitulos")
 function renderizarContenido(texto) {
   contenidoEl.innerHTML = "";
 
-  // separa por doble salto de línea
   const parrafos = texto
     .split(/\n\s*\n/)
     .map(p => p.trim())
     .filter(p => p !== "");
 
-  parrafos.forEach(pTexto => {
+  parrafos.forEach(txt => {
     const p = document.createElement("p");
-    p.innerHTML = pTexto; // mantiene negrita, cursiva, etc.
-
-    // fuerza color blanco en dark
-    if (document.body.classList.contains("dark")) {
-      p.style.color = "#f1f1f1";
-    }
-
+    p.innerHTML = txt; // respeta negrita, cursiva, etc.
     contenidoEl.appendChild(p);
   });
 }
