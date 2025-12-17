@@ -78,24 +78,25 @@ publicarBtn.onclick = async () => {
     fecha: fecha.value
   };
 
-};
+  const url = editId ? `/api/capitulos/${editId}` : "/api/capitulos";
+  const method = editId ? "PUT" : "POST";
 
-const url = editId ? `/api/capitulos/${editId}` : "/api/capitulos";
-const method = editId ? "PUT" : "POST";
+  await fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(data)
+  });
 
-await fetch(url, {
-  method,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`
-  },
-  body: JSON.stringify(data)
-});
-
-mensaje.textContent = "Guardado correctamente";
-editId = null;
-titulo.value = descripcion.value = contenido.value = fecha.value = "";
-cargarCapitulos();
+  mensaje.textContent = "Guardado correctamente";
+  editId = null;
+  titulo.value = "";
+  descripcion.value = "";
+  fecha.value = "";
+  contenido.innerHTML = "";
+  cargarCapitulos();
 };
 
 document.querySelectorAll(".toolbar button").forEach(btn => {
