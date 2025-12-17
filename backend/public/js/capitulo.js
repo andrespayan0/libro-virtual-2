@@ -6,18 +6,20 @@ const contenidoEl = document.getElementById("contenidoCapitulo");
 const toggleDark = document.getElementById("toggleDark");
 
 // ====== DARK MODE ======
-const darkActivo = localStorage.getItem("darkMode") === "true";
-if (darkActivo) document.body.classList.add("dark");
+const btnDark = document.getElementById("toggleDark");
 
-if (toggleDark) {
-  toggleDark.onclick = () => {
-    document.body.classList.toggle("dark");
-    localStorage.setItem(
-      "darkMode",
-      document.body.classList.contains("dark")
-    );
-  };
+if (localStorage.getItem("darkMode") === "true") {
+  document.body.classList.add("dark");
 }
+
+btnDark.onclick = () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem(
+    "darkMode",
+    document.body.classList.contains("dark")
+  );
+};
+
 
 // ====== CARGAR CAPÍTULO ======
 fetch("/api/capitulos")
