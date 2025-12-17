@@ -1,11 +1,12 @@
+html
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Panel del autor | Confesiones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/editor.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <header>
@@ -20,47 +21,45 @@
 <h1>Editor de capítulos</h1>
 
 <section class="nuevo-capitulo">
+
+<label>Capítulos existentes</label>
+<select id="capitulosSelect" class="input-titulo"></select>
+
 <label>Título</label>
-<input id="titulo" class="input-titulo" />
+<input id="titulo" class="input-titulo">
 
 <label>Descripción</label>
 <textarea id="descripcion" class="input-descripcion" maxlength="200"></textarea>
 <small id="contador">0 / 200</small>
 
 <label>Contenido</label>
-
-<!-- TOOLBAR -->
 <div class="toolbar">
-<button data-cmd="bold">B</button>
-<button data-cmd="italic">I</button>
-<button data-cmd="underline">U</button>
-<button data-cmd="insertUnorderedList">• Lista</button>
-<button data-cmd="justifyLeft">⯇</button>
-<button data-cmd="justifyCenter">≡</button>
-<button data-cmd="justifyRight">⯈</button>
-<select id="fontSize">
-<option value="3">Normal</option>
-<option value="4">Grande</option>
-<option value="5">Muy grande</option>
-</select>
+  <button data-cmd="bold">B</button>
+  <button data-cmd="italic">I</button>
+  <button data-cmd="underline">U</button>
+  <button data-cmd="insertUnorderedList">•</button>
+  <button data-cmd="justifyLeft">⯇</button>
+  <button data-cmd="justifyCenter">≡</button>
+  <button data-cmd="justifyRight">⯈</button>
+  <select id="fontSize">
+    <option value="3">Normal</option>
+    <option value="4">Grande</option>
+    <option value="5">Muy grande</option>
+  </select>
 </div>
-
 <div id="editor" class="editor-texto" contenteditable="true"></div>
 
-<label>Fecha</label>
-<input id="fecha" type="datetime-local" class="input-fecha" />
-
 <div class="acciones">
-<button id="previewBtn">Vista previa</button>
-<button id="guardarBtn">Guardar</button>
-<button id="eliminarBtn" class="danger">Eliminar</button>
+  <button id="previewBtn">Vista previa</button>
+  <button id="guardarBtn">Guardar</button>
+  <button id="eliminarBtn" class="danger">Eliminar</button>
 </div>
 </section>
 
 <section id="preview" class="preview-capitulo hidden"></section>
 </main>
 
-<footer><p>Panel privado</p></footer>
+<footer><p>Panel privado del autor</p></footer>
 <script src="js/editor.js"></script>
 </body>
 </html>

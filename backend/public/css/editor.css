@@ -137,6 +137,7 @@
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+
   .nuevo-capitulo,
   .preview-capitulo {
     padding: 28px;
@@ -160,23 +161,27 @@
 }
 
 .toolbar {
-  display:flex;
-  gap:8px;
-  margin-bottom:12px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap
 }
-.toolbar button, .toolbar select {
-  padding:6px 10px;
-  border-radius:8px;
-  border:1px solid #cfd8cf;
-  background:#fff;
-  cursor:pointer;
+
+.toolbar button,
+.toolbar select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #cfd8cf;
+  background: #fff;
+  cursor: pointer
 }
 
 .editor-texto {
-  background:#fff;
+  background: #fff;
+  min-height: 300px
 }
 
 .danger {
-  background:#b14a4a;
-  color:#fff;
+  background: #b14a4a;
+  color: #fff
 }
