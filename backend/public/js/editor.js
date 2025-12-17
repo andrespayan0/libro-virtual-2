@@ -48,7 +48,7 @@ function editar(c) {
   titulo.value = c.titulo;
   descripcion.value = c.descripcion || "";
   contenido.value = c.paginas.join("\n\n");
-  fecha.value = c.fecha ? c.fecha.slice(0,16) : "";
+  fecha.value = c.fecha ? c.fecha.slice(0, 16) : "";
 }
 
 async function borrar(id) {
@@ -66,7 +66,7 @@ publicarBtn.onclick = async () => {
   const data = {
     titulo: titulo.value,
     descripcion: descripcion.value,
-    paginas: [contenido.value],
+    paginas: [contenido.innerHTML],
     fecha: fecha.value
   };
 
@@ -87,5 +87,16 @@ publicarBtn.onclick = async () => {
   titulo.value = descripcion.value = contenido.value = fecha.value = "";
   cargarCapitulos();
 };
+
+document.querySelectorAll(".toolbar button").forEach(btn => {
+  btn.onclick = () => {
+    document.execCommand(btn.dataset.cmd, false, null);
+  };
+});
+
+document.getElementById("fontSize").onchange = e => {
+  document.execCommand("fontSize", false, e.target.value);
+};
+
 
 cargarCapitulos();

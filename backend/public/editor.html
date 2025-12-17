@@ -13,53 +13,65 @@
 
 <body>
 
-<header>
-  <div class="brand">
-    <span class="brand-title">Panel del autor</span>
-  </div>
-
-  <nav>
-    <a href="index.html">Volver al libro</a>
-    <a href="#" id="logoutBtn" class="logout-btn">Cerrar sesión</a>
-  </nav>
-</header>
-
-<main class="editor-container">
-
-  <h1>Nuevo / Editar capítulo</h1>
-  <p id="mensaje"></p>
-
-  <section class="nuevo-capitulo">
-
-    <label>Título</label>
-    <input id="titulo" class="input-titulo" type="text">
-
-    <label>Descripción</label>
-    <textarea id="descripcion" class="input-descripcion"></textarea>
-
-    <label>Contenido</label>
-    <textarea id="contenido" class="editor-texto"></textarea>
-
-    <label>Fecha de publicación</label>
-    <input id="fecha" type="datetime-local" class="input-fecha">
-
-    <div class="acciones">
-      <button id="publicarBtn" class="btn-publicar">Guardar</button>
+  <header>
+    <div class="brand">
+      <span class="brand-title">Panel del autor</span>
     </div>
 
-  </section>
+    <nav>
+      <a href="index.html">Volver al libro</a>
+      <a href="#" id="logoutBtn" class="logout-btn">Cerrar sesión</a>
+    </nav>
+  </header>
 
-  <section class="lista-capitulos">
-    <h2>Capítulos existentes</h2>
-    <div id="listaCapitulos"></div>
-  </section>
+  <main class="editor-container">
 
-</main>
+    <h1>Nuevo / Editar capítulo</h1>
+    <p id="mensaje"></p>
 
-<footer>
-  <p>Panel privado del autor</p>
-</footer>
+    <section class="nuevo-capitulo">
 
-<script src="js/editor.js"></script>
+      <label>Título</label>
+      <input id="titulo" class="input-titulo" type="text">
+
+      <label>Descripción</label>
+      <textarea id="descripcion" class="input-descripcion"></textarea>
+
+      <label>Contenido</label>
+      <div class="toolbar">
+        <button data-cmd="bold">B</button>
+        <button data-cmd="italic">I</button>
+        <button data-cmd="indent">↦</button>
+        <select id="fontSize">
+          <option value="3">Normal</option>
+          <option value="4">Grande</option>
+          <option value="5">Muy grande</option>
+        </select>
+      </div>
+
+      <div id="contenido" class="editor-texto editor-rich" contenteditable="true"></div>
+
+      <label>Fecha de publicación</label>
+      <input id="fecha" type="datetime-local" class="input-fecha">
+
+      <div class="acciones">
+        <button id="publicarBtn" class="btn-publicar">Guardar</button>
+      </div>
+
+    </section>
+
+    <section class="lista-capitulos">
+      <h2>Capítulos existentes</h2>
+      <div id="listaCapitulos"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Panel privado del autor</p>
+  </footer>
+
+  <script src="js/editor.js"></script>
 </body>
+
 </html>
