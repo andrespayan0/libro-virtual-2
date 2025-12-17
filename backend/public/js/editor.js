@@ -45,11 +45,19 @@ async function cargarCapitulos() {
 
 function editar(c) {
   editId = c.id;
+
   titulo.value = c.titulo;
   descripcion.value = c.descripcion || "";
-  contenido.value = c.paginas.join("\n\n");
+
+  // AQUÍ ESTABA EL ERROR
+  contenido.innerHTML = Array.isArray(c.paginas)
+    ? c.paginas.join("<br><br>")
+    : "";
+
   fecha.value = c.fecha ? c.fecha.slice(0, 16) : "";
 }
+
+
 
 async function borrar(id) {
   if (!confirm("¿Eliminar capítulo?")) return;
@@ -70,22 +78,24 @@ publicarBtn.onclick = async () => {
     fecha: fecha.value
   };
 
-  const url = editId ? `/api/capitulos/${editId}` : "/api/capitulos";
-  const method = editId ? "PUT" : "POST";
+};
 
-  await fetch(url, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(data)
-  });
+const url = editId ? `/api/capitulos/${editId}` : "/api/capitulos";
+const method = editId ? "PUT" : "POST";
 
-  mensaje.textContent = "Guardado correctamente";
-  editId = null;
-  titulo.value = descripcion.value = contenido.value = fecha.value = "";
-  cargarCapitulos();
+await fetch(url, {
+  method,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`
+  },
+  body: JSON.stringify(data)
+});
+
+mensaje.textContent = "Guardado correctamente";
+editId = null;
+titulo.value = descripcion.value = contenido.value = fecha.value = "";
+cargarCapitulos();
 };
 
 document.querySelectorAll(".toolbar button").forEach(btn => {
@@ -99,26 +109,5 @@ document.getElementById("fontSize").onchange = e => {
 };
 
 
-document.querySelectorAll(".toolbar button[data-cmd]").forEach(btn => {
-  btn.onclick = () => {
-    document.execCommand(btn.dataset.cmd, false, null);
-    contenido.focus();
-  };
-});
-
-fontSize.onchange = e => {
-  document.execCommand("fontSize", false, e.target.value);
-  contenido.focus();
-};
-
-document.getElementById("blockquote").onclick = () => {
-  document.execCommand("formatBlock", false, "blockquote");
-  contenido.focus();
-};
-
-document.getElementById("hr").onclick = () => {
-  document.execCommand("insertHorizontalRule");
-  contenido.focus();
-};
 
 cargarCapitulos();

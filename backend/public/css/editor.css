@@ -224,9 +224,14 @@
 }
 
 .editor-rich {
+  min-height: 280px;
+  border: 1px solid #cfd8cf;
+  border-radius: 14px;
+  padding: 14px;
   background: white;
-  min-height: 300px;
+  outline: none;
 }
+
 
 .editor-rich blockquote {
   border-left: 4px solid #2f6f4e;
