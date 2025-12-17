@@ -102,28 +102,48 @@
   }
 }
 
+/* =========================
+   MODO NOCHE – SUAVE
+========================= */
+
 body.dark {
-  background: #121212;
+  background: #1c1f1d;
 }
 
 body.dark .capitulo-titulo {
-  color: #eaeaea;
+  color: #e6e6e6;
 }
 
 body.dark .pagina-capitulo {
-  background: #1e1e1e;
-  box-shadow: none;
+  background: linear-gradient(180deg, #232725, #1e2220);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
 body.dark .pagina-capitulo p {
-  color: #dcdcdc;
+  color: #d0d6d2;
 }
 
 body.dark .separador {
-  color: #777;
+  color: #9aa79f;
 }
 
 body.dark .btn-volver {
-  background-color: rgba(255,255,255,0.08);
-  color: #eaeaea;
+  background-color: rgba(255,255,255,0.06);
+  color: #d0e6db;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+body.dark .btn-volver:hover {
+  background-color: rgba(255,255,255,0.12);
+}
+
+
+.pagina-capitulo br {
+  content: "";
+  display: block;
+  margin-bottom: 24px;
+}
+
+.pagina-capitulo > * {
+  margin-bottom: 28px;
 }
