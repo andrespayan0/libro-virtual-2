@@ -19,7 +19,7 @@
 }
 
 /* =========================
-   TARJETA ÚNICA
+   TARJETA CAPÍTULO
 ========================= */
 .pagina-capitulo {
   background: linear-gradient(180deg, #ffffff, #f3f5f0);
@@ -39,8 +39,14 @@
   margin-bottom: 28px;
 }
 
+/* saltos de línea */
+.pagina-capitulo br {
+  display: block;
+  margin-bottom: 24px;
+}
+
 /* =========================
-   SEPARADOR ---
+   SEPARADOR
 ========================= */
 .separador {
   text-align: center;
@@ -50,29 +56,37 @@
   color: #8b6b4a;
 }
 
-/* BOTÓN VOLVER */
-.btn-volver {
+/* =========================
+   BOTONES HEADER
+========================= */
+.btn-volver,
+.btn-dark {
   display: inline-block;
   margin-bottom: 28px;
+  margin-right: 12px;
   padding: 10px 18px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #2f6f4e;
-  background-color: rgba(47, 111, 78, 0.08);
   border-radius: 14px;
+  border: none;
+  cursor: pointer;
   text-decoration: none;
-  transition: all 0.25s ease;
+
+  background-color: rgba(47, 111, 78, 0.08);
+  color: #2f6f4e;
+
+  transition: background-color 0.25s ease, transform 0.2s ease;
 }
 
-.btn-volver:hover {
+.btn-volver:hover,
+.btn-dark:hover {
   background-color: rgba(47, 111, 78, 0.16);
-  transform: translateX(-3px);
+  transform: translateY(-2px);
 }
 
 /* =========================
-   RESPONSIVE – AGREGADO
+   RESPONSIVE
 ========================= */
-
 @media (max-width: 900px) {
   .pagina-capitulo {
     padding: 44px 40px;
@@ -105,7 +119,6 @@
 /* =========================
    MODO NOCHE – SUAVE
 ========================= */
-
 body.dark {
   background: #2e2f2e;
 }
@@ -120,60 +133,20 @@ body.dark .pagina-capitulo {
 }
 
 body.dark .pagina-capitulo p {
-  color: #d0d6d2;
+  color: #eaeaea;
 }
 
 body.dark .separador {
   color: #9aa79f;
 }
 
-body.dark .btn-volver {
-  background-color: rgba(255,255,255,0.06);
-  color: #d0e6db;
-  border: 1px solid rgba(255,255,255,0.12);
-}
-
-body.dark .btn-volver:hover {
-  background-color: rgba(255,255,255,0.12);
-}
-
-
-.pagina-capitulo br {
-  content: "";
-  display: block;
-  margin-bottom: 24px;
-}
-
-.pagina-capitulo > * {
-  margin-bottom: 28px;
-}
-
-.btn-dark {
-  margin-left: 12px;
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-
-  background-color: rgba(47, 111, 78, 0.08);
-  color: #2f6f4e;
-
-  transition: background-color 0.25s ease, transform 0.2s ease;
-}
-
-.btn-dark:hover {
-  background-color: rgba(47, 111, 78, 0.16);
-  transform: translateY(-2px);
-}
-
-/* dark mode */
+body.dark .btn-volver,
 body.dark .btn-dark {
   background-color: rgba(255, 255, 255, 0.08);
   color: #eaeaea;
 }
 
+body.dark .btn-volver:hover,
 body.dark .btn-dark:hover {
   background-color: rgba(255, 255, 255, 0.14);
 }
