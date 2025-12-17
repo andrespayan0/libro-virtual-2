@@ -21,63 +21,69 @@ const logoutBtn = document.getElementById("logoutBtn");
 // ===============================
 // 🔓 LOGOUT
 // ===============================
-logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("token");
-  window.location.href = "/";
-});
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  });
+}
 
 // ===============================
-// 👁️ VISTA PREVIA
+// 👁️ VISTA PREVIA (BÁSICA)
 // ===============================
-contenidoInput.addEventListener("input", () => {
-  preview.textContent = contenidoInput.value;
-});
+if (contenidoInput && preview) {
+  contenidoInput.addEventListener("input", () => {
+    preview.textContent = contenidoInput.value;
+  });
+}
 
 // ===============================
 // ✍️ PUBLICAR CAPÍTULO
 // ===============================
-publicarBtn.addEventListener("click", async () => {
-  const titulo = tituloInput.value.trim();
-  const descripcion = descripcionInput.value.trim();
-  const contenido = contenidoInput.value.trim();
+if (publicarBtn) {
+  publicarBtn.addEventListener("click", async () => {
+    const titulo = tituloInput.value.trim();
+    const descripcion = descripcionInput.value.trim();
+    const contenido = contenidoInput.value.trim();
 
-  if (!titulo || !contenido) {
-    mensaje.textContent = "El título y el contenido son obligatorios";
-    mensaje.style.color = "red";
-    return;
-  }
-
-  const nuevoCapitulo = {
-    titulo,
-    descripcion,
-    paginas: [contenido]
-  };
-
-  try {
-    const response = await fetch("/api/capitulos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(nuevoCapitulo)
-    });
-
-    if (!response.ok) {
-      throw new Error("Error al publicar");
+    if (!titulo || !contenido) {
+      mensaje.textContent = "El título y el contenido son obligatorios";
+      mensaje.style.color = "red";
+      return;
     }
 
-    mensaje.textContent = "Capítulo publicado correctamente";
-    mensaje.style.color = "green";
+    const nuevoCapitulo = {
+      titulo,
+      descripcion,
+      paginas: [contenido]
+    };
 
-    tituloInput.value = "";
-    descripcionInput.value = "";
-    contenidoInput.value = "";
-    preview.textContent = "";
+    try {
+      const response = await fetch("/api/capitulos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(nuevoCapitulo)
+      });
 
-  } catch (error) {
-    mensaje.textContent = "Error al publicar el capítulo";
-    mensaje.style.color = "red";
-    console.error(error);
-  }
-});
+      if (!response.ok) {
+        throw new Error("Error al publicar");
+      }
+
+      mensaje.textContent = "Capítulo publicado correctamente";
+      mensaje.style.color = "green";
+
+      tituloInput.value = "";
+      descripcionInput.value = "";
+      contenidoInput.value = "";
+      preview.textContent = "";
+
+    } catch (error) {
+      mensaje.textContent = "Error al publicar el capítulo";
+      mensaje.style.color = "red";
+      console.error(error);
+    }
+  });
+}
