@@ -158,3 +158,25 @@
     font-size: 1.6rem;
   }
 }
+
+.toolbar {
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+.toolbar button, .toolbar select {
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid #cfd8cf;
+  background:#fff;
+  cursor:pointer;
+}
+
+.editor-texto {
+  background:#fff;
+}
+
+.danger {
+  background:#b14a4a;
+  color:#fff;
+}

@@ -6,79 +6,66 @@
   <title>Panel del autor | Confesiones</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/editor.css">
-  <link rel="shortcut icon" href="assets/img/icon.png" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-
-  <!-- HEADER -->
   <header>
-    <div class="brand">
-      <span class="brand-title">Panel del autor</span>
-    </div>
-
+    <div class="brand"><span class="brand-title">Panel del autor</span></div>
     <nav>
-      <a href="index.html">Volver al libro</a>
-      <a href="#" class="logout-btn">Cerrar sesión</a>
+      <a href="index.html">Volver</a>
+      <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
     </nav>
   </header>
 
-  <!-- MAIN -->
   <main class="editor-container">
+    <h1>Editor de capítulos</h1>
 
-    <h1>Nuevo capítulo</h1>
-
-    <!-- FORMULARIO -->
     <section class="nuevo-capitulo">
+      <label>Título</label>
+      <input id="titulo" class="input-titulo" />
 
-      <label for="titulo">Título del capítulo</label>
-      <input id="titulo" type="text" class="input-titulo"
-        placeholder="Ej: Capítulo 1 – Lo que nadie dijo">
+      <label>Descripción</label>
+      <textarea id="descripcion" class="input-descripcion" maxlength="200"></textarea>
+      <small id="contador">0 / 200</small>
 
-      <label for="descripcion">Descripción del capítulo</label>
-      <textarea id="descripcion" class="input-descripcion" rows="3" maxlength="200"
-        placeholder="Breve descripción que se mostrará en la página principal..."></textarea>
+      <label>Contenido</label>
 
-      <small class="contador-descripcion">0 / 200</small>
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <button data-cmd="bold">B</button>
+        <button data-cmd="italic">I</button>
+        <button data-cmd="underline">U</button>
+        <button data-cmd="insertUnorderedList">• Lista</button>
+        <button data-cmd="justifyLeft">⯇</button>
+        <button data-cmd="justifyCenter">≡</button>
+        <button data-cmd="justifyRight">⯈</button>
+        <select id="fontSize">
+          <option value="3">Normal</option>
+          <option value="4">Grande</option>
+          <option value="5">Muy grande</option>
+        </select>
+      </div>
 
-      <label for="contenido">Contenido del capítulo</label>
-      <textarea id="contenido" class="editor-texto"
-        placeholder="Escribe aquí el capítulo completo...&#10;&#10;Usa --- para separar páginas"></textarea>
+      <div id="editor" class="editor-texto" contenteditable="true"></div>
 
-      <label for="fecha">Fecha de publicación</label>
-      <input id="fecha" type="datetime-local" class="input-fecha">
+      <label>Fecha</label>
+      <input id="fecha" type="datetime-local" class="input-fecha" />
 
       <div class="acciones">
-        <button class="btn-preview" type="button">Vista previa</button>
-        <button class="btn-publicar" type="button">Publicar ahora</button>
-        <button class="btn-programar" type="button">Guardar y programar</button>
+        <button id="previewBtn">Vista previa</button>
+        <button id="guardarBtn">Guardar</button>
+        <button id="eliminarBtn" class="danger">Eliminar</button>
       </div>
-
     </section>
 
-    <!-- VISTA PREVIA -->
-    <section class="preview-capitulo hidden">
-
-      <h2 class="preview-titulo"></h2>
-
-      <p class="preview-descripcion"></p>
-
-      <div class="preview-paginas">
-        <!-- Páginas generadas por JS -->
-      </div>
-
-    </section>
-
+    <section id="preview" class="preview-capitulo hidden"></section>
   </main>
 
-  <!-- FOOTER -->
   <footer>
-    <p>Panel privado del autor</p>
+    <p>Panel privado</p>
   </footer>
-
   <script src="js/editor.js"></script>
-
 </body>
 
 </html>

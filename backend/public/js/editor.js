@@ -1,85 +1,63 @@
-// ===============================
-// 🔐 PROTECCIÓN DEL EDITOR
-// ===============================
+// ================= SEGURIDAD BÁSICA =================
 const token = localStorage.getItem("token");
+if (!token) location.href = "login.html";
 
-if (!token) {
-  window.location.href = "login.html";
-}
+const headers = {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${token}`
+};
 
-// ===============================
-// 📌 ELEMENTOS
-// ===============================
-const tituloInput = document.getElementById("titulo");
-const descripcionInput = document.getElementById("descripcion");
-const contenidoInput = document.getElementById("contenido");
+// ================= ELEMENTOS =================
+const titulo = document.getElementById("titulo");
+const descripcion = document.getElementById("descripcion");
+const editor = document.getElementById("editor");
 const preview = document.getElementById("preview");
-const mensaje = document.getElementById("mensaje");
-const publicarBtn = document.getElementById("publicarBtn");
-const logoutBtn = document.getElementById("logoutBtn");
+const contador = document.getElementById("contador");
 
-// ===============================
-// 🔓 LOGOUT
-// ===============================
-logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("token");
-  window.location.href = "index.html";
+// ================= TOOLBAR =================
+document.querySelectorAll('.toolbar button').forEach(btn => {
+  btn.onclick = () => document.execCommand(btn.dataset.cmd, false, null);
 });
 
+document.getElementById('fontSize').onchange = e => {
+  document.execCommand('fontSize', false, e.target.value);
+};
 
-// ===============================
-// 👁️ VISTA PREVIA
-// ===============================
-contenidoInput.addEventListener("input", () => {
-  preview.textContent = contenidoInput.value;
-});
+// ================= CONTADOR =================
+descripcion.oninput = () => contador.textContent = `${descripcion.value.length} / 200`;
 
-// ===============================
-// ✍️ PUBLICAR CAPÍTULO
-// ===============================
-publicarBtn.addEventListener("click", async () => {
-  const titulo = tituloInput.value.trim();
-  const descripcion = descripcionInput.value.trim();
-  const contenido = contenidoInput.value.trim();
+// ================= VISTA PREVIA =================
+document.getElementById('previewBtn').onclick = () => {
+  preview.innerHTML = `<h2>${sanitize(titulo.value)}</h2><div>${editor.innerHTML}</div>`;
+  preview.classList.toggle('hidden');
+};
 
-  if (!titulo || !contenido) {
-    mensaje.textContent = "El título y el contenido son obligatorios";
-    mensaje.style.color = "red";
-    return;
-  }
-
-  const nuevoCapitulo = {
-    titulo,
-    descripcion,
-    paginas: [contenido]
+// ================= GUARDAR =================
+document.getElementById('guardarBtn').onclick = async () => {
+  const data = {
+    titulo: sanitize(titulo.value),
+    descripcion: sanitize(descripcion.value),
+    contenido: editor.innerHTML
   };
 
-  try {
-    const response = await fetch("/api/capitulos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(nuevoCapitulo)
-    });
+  await fetch('/api/capitulos', { method:'POST', headers, body:JSON.stringify(data) });
+  alert('Capítulo guardado');
+};
 
-    if (!response.ok) {
-      throw new Error("Error al publicar");
-    }
+// ================= ELIMINAR =================
+document.getElementById('eliminarBtn').onclick = async () => {
+  if (!confirm('¿Eliminar capítulo?')) return;
+  await fetch('/api/capitulos', { method:'DELETE', headers });
+  alert('Capítulo eliminado');
+};
 
-    mensaje.textContent = "Capítulo publicado correctamente";
-    mensaje.style.color = "green";
+// ================= LOGOUT =================
+document.getElementById('logoutBtn').onclick = () => {
+  localStorage.clear();
+  location.href = 'index.html';
+};
 
-    // LIMPIAR FORMULARIO
-    tituloInput.value = "";
-    descripcionInput.value = "";
-    contenidoInput.value = "";
-    preview.textContent = "";
-
-  } catch (error) {
-    mensaje.textContent = "Error al publicar el capítulo";
-    mensaje.style.color = "red";
-    console.error(error);
-  }
-});
+// ================= SANITIZACIÓN =================
+function sanitize(str) {
+  return str.replace(/[<>]/g, '');
+}
