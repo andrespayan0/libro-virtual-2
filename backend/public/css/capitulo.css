@@ -107,7 +107,7 @@
 ========================= */
 
 body.dark {
-  background: #1c1f1d;
+  background: #2e2f2e;
 }
 
 body.dark .capitulo-titulo {
@@ -146,4 +146,34 @@ body.dark .btn-volver:hover {
 
 .pagina-capitulo > * {
   margin-bottom: 28px;
+}
+
+.btn-dark {
+  margin-left: 12px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+
+  background-color: rgba(47, 111, 78, 0.08);
+  color: #2f6f4e;
+
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn-dark:hover {
+  background-color: rgba(47, 111, 78, 0.16);
+  transform: translateY(-2px);
+}
+
+/* dark mode */
+body.dark .btn-dark {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #eaeaea;
+}
+
+body.dark .btn-dark:hover {
+  background-color: rgba(255, 255, 255, 0.14);
 }
