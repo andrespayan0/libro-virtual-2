@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <title>Panel del autor | Confesiones</title>
@@ -8,64 +7,60 @@
   <link rel="stylesheet" href="css/editor.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-
 <body>
-  <header>
-    <div class="brand"><span class="brand-title">Panel del autor</span></div>
-    <nav>
-      <a href="index.html">Volver</a>
-      <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
-    </nav>
-  </header>
+<header>
+  <div class="brand"><span class="brand-title">Panel del autor</span></div>
+  <nav>
+    <a href="index.html">Volver</a>
+    <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+  </nav>
+</header>
 
-  <main class="editor-container">
-    <h1>Editor de capítulos</h1>
+<main class="editor-container">
+<h1>Editor de capítulos</h1>
 
-    <section class="nuevo-capitulo">
-      <label>Título</label>
-      <input id="titulo" class="input-titulo" />
+<section class="nuevo-capitulo">
+<label>Título</label>
+<input id="titulo" class="input-titulo" />
 
-      <label>Descripción</label>
-      <textarea id="descripcion" class="input-descripcion" maxlength="200"></textarea>
-      <small id="contador">0 / 200</small>
+<label>Descripción</label>
+<textarea id="descripcion" class="input-descripcion" maxlength="200"></textarea>
+<small id="contador">0 / 200</small>
 
-      <label>Contenido</label>
+<label>Contenido</label>
 
-      <!-- TOOLBAR -->
-      <div class="toolbar">
-        <button data-cmd="bold">B</button>
-        <button data-cmd="italic">I</button>
-        <button data-cmd="underline">U</button>
-        <button data-cmd="insertUnorderedList">• Lista</button>
-        <button data-cmd="justifyLeft">⯇</button>
-        <button data-cmd="justifyCenter">≡</button>
-        <button data-cmd="justifyRight">⯈</button>
-        <select id="fontSize">
-          <option value="3">Normal</option>
-          <option value="4">Grande</option>
-          <option value="5">Muy grande</option>
-        </select>
-      </div>
+<!-- TOOLBAR -->
+<div class="toolbar">
+<button data-cmd="bold">B</button>
+<button data-cmd="italic">I</button>
+<button data-cmd="underline">U</button>
+<button data-cmd="insertUnorderedList">• Lista</button>
+<button data-cmd="justifyLeft">⯇</button>
+<button data-cmd="justifyCenter">≡</button>
+<button data-cmd="justifyRight">⯈</button>
+<select id="fontSize">
+<option value="3">Normal</option>
+<option value="4">Grande</option>
+<option value="5">Muy grande</option>
+</select>
+</div>
 
-      <div id="editor" class="editor-texto" contenteditable="true"></div>
+<div id="editor" class="editor-texto" contenteditable="true"></div>
 
-      <label>Fecha</label>
-      <input id="fecha" type="datetime-local" class="input-fecha" />
+<label>Fecha</label>
+<input id="fecha" type="datetime-local" class="input-fecha" />
 
-      <div class="acciones">
-        <button id="previewBtn">Vista previa</button>
-        <button id="guardarBtn">Guardar</button>
-        <button id="eliminarBtn" class="danger">Eliminar</button>
-      </div>
-    </section>
+<div class="acciones">
+<button id="previewBtn">Vista previa</button>
+<button id="guardarBtn">Guardar</button>
+<button id="eliminarBtn" class="danger">Eliminar</button>
+</div>
+</section>
 
-    <section id="preview" class="preview-capitulo hidden"></section>
-  </main>
+<section id="preview" class="preview-capitulo hidden"></section>
+</main>
 
-  <footer>
-    <p>Panel privado</p>
-  </footer>
-  <script src="js/editor.js"></script>
+<footer><p>Panel privado</p></footer>
+<script src="js/editor.js"></script>
 </body>
-
 </html>
