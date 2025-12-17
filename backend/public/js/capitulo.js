@@ -3,7 +3,21 @@ const index = params.get("id");
 
 const tituloEl = document.getElementById("tituloCapitulo");
 const contenidoEl = document.getElementById("contenidoCapitulo");
-const btnModo = document.getElementById("modoLectura");
+const toggleDark = document.getElementById("toggleDark");
+
+// ====== DARK MODE ======
+const darkActivo = localStorage.getItem("darkMode") === "true";
+if (darkActivo) document.body.classList.add("dark");
+
+if (toggleDark) {
+  toggleDark.onclick = () => {
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+      "darkMode",
+      document.body.classList.contains("dark")
+    );
+  };
+}
 
 // ====== CARGAR CAPÍTULO ======
 fetch("/api/capitulos")
@@ -12,33 +26,38 @@ fetch("/api/capitulos")
     const capitulo = capitulos[index];
 
     if (!capitulo || !capitulo.paginas || capitulo.paginas.length === 0) {
-      tituloEl.textContent = "Capítulo";
       contenidoEl.innerHTML = "<p>Este capítulo aún no tiene contenido.</p>";
       return;
     }
 
     tituloEl.textContent = capitulo.titulo;
 
-    // CLAVE: respetar HTML del editor
-    contenidoEl.innerHTML = capitulo.paginas.join("");
+    renderizarContenido(capitulo.paginas.join("\n\n"));
   })
   .catch(err => {
     contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
     console.error(err);
   });
 
-// ====== MODO OSCURO (LECTORES) ======
-if (btnModo) {
-  if (localStorage.getItem("modoLectura") === "dark") {
-    document.body.classList.add("dark");
-  }
+// ====== RENDER ======
+function renderizarContenido(texto) {
+  contenidoEl.innerHTML = "";
 
-  btnModo.onclick = () => {
-    document.body.classList.toggle("dark");
+  // separa por doble salto de línea
+  const parrafos = texto
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(p => p !== "");
 
-    localStorage.setItem(
-      "modoLectura",
-      document.body.classList.contains("dark") ? "dark" : "light"
-    );
-  };
+  parrafos.forEach(pTexto => {
+    const p = document.createElement("p");
+    p.innerHTML = pTexto; // mantiene negrita, cursiva, etc.
+
+    // fuerza color blanco en dark
+    if (document.body.classList.contains("dark")) {
+      p.style.color = "#f1f1f1";
+    }
+
+    contenidoEl.appendChild(p);
+  });
 }
