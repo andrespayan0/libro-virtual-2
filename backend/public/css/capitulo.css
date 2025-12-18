@@ -39,7 +39,6 @@
   margin-bottom: 28px;
 }
 
-/* saltos de línea */
 .pagina-capitulo br {
   display: block;
   margin-bottom: 24px;
@@ -117,7 +116,7 @@
 }
 
 /* =========================
-   MODO NOCHE – SUAVE
+   MODO NOCHE
 ========================= */
 body.dark {
   background: #2e2f2e;
@@ -140,13 +139,23 @@ body.dark .separador {
   color: #9aa79f;
 }
 
-body.dark .btn-volver,
-body.dark .btn-dark {
+body.dark .btn-volver {
   background-color: rgba(255, 255, 255, 0.08);
   color: #eaeaea;
 }
 
-body.dark .btn-volver:hover,
-body.dark .btn-dark:hover {
+body.dark .btn-volver:hover {
   background-color: rgba(255, 255, 255, 0.14);
+}
+
+/* =========================
+   BOTÓN DARK MODE NEGRO
+========================= */
+body.dark .btn-dark {
+  background-color: #000;
+  color: #fff;
+}
+
+body.dark .btn-dark:hover {
+  background-color: #111;
 }
