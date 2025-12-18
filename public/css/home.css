@@ -124,3 +124,17 @@
     font-size: 2.2rem;
   }
 }
+
+.capitulo-leido {
+  opacity: 0.75;
+}
+
+.capitulo-leido h3 {
+  color: #6fcf97;
+}
+
+.leido {
+  font-size: 0.85rem;
+  margin-left: 8px;
+  color: #6fcf97;
+}

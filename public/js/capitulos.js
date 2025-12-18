@@ -22,10 +22,19 @@ fetch("/api/capitulos")
       const card = document.createElement("article");
       card.classList.add("capitulo-card");
 
+      const leido = localStorage.getItem(`capitulo_leido_${index}`) === "true";
+
       card.innerHTML = `
-        <h3>${capitulo.titulo}</h3>
-        <p>${capitulo.descripcion}</p>
-      `;
+    <h3>
+      ${capitulo.titulo}
+      ${leido ? '<span class="leido">✔ Leído</span>' : ''}
+    </h3>
+    <p>${capitulo.descripcion}</p>
+  `;
+
+      if (leido) {
+        card.classList.add("capitulo-leido");
+      }
 
       card.addEventListener("click", () => {
         window.location.href = `capitulo.html?id=${index}`;
@@ -33,6 +42,7 @@ fetch("/api/capitulos")
 
       contenedor.appendChild(card);
     });
+
   })
   .catch(error => {
     console.error("Error cargando capítulos:", error);

@@ -107,3 +107,20 @@ document.addEventListener("keydown", e => {
   }
 });
 document.addEventListener("selectstart", e => e.preventDefault());
+
+/* =========================
+   MARCAR COMO LEÍDO
+========================= */
+function marcarComoLeido(capituloId) {
+  localStorage.setItem(`capitulo_leido_${capituloId}`, "true");
+}
+
+// Detectar cuando llega al final
+window.addEventListener("scroll", () => {
+  const scrollActual = window.scrollY + window.innerHeight;
+  const alturaTotal = document.documentElement.scrollHeight;
+
+  if (scrollActual >= alturaTotal - 10) {
+    marcarComoLeido(index);
+  }
+});
