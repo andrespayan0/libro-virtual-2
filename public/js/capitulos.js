@@ -5,18 +5,19 @@ fetch("/api/capitulos")
   .then(capitulos => {
     contenedor.innerHTML = "";
 
-    if (capitulos.length === 0) {
+    if (!Array.isArray(capitulos) || capitulos.length === 0) {
       contenedor.innerHTML = `
-        <p class="sin-capitulos">
-          Aún no hay capítulos publicados.
-        </p>
+        <p class="sin-capitulos">Aún no hay capítulos publicados.</p>
       `;
       return;
     }
 
+    // Mostrar capítulos del más viejo al más nuevo
+    capitulos.reverse();
+
     capitulos.forEach((capitulo, index) => {
       const card = document.createElement("article");
-      card.classList.add("capitulo-card");
+      card.className = "capitulo-card";
 
       card.innerHTML = `
         <h3>${capitulo.titulo}</h3>
