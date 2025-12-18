@@ -1,10 +1,9 @@
 {
-  "name": "backend",
+  "name": "libro-virtual",
   "version": "1.0.0",
-  "description": "",
+  "description": "Proyecto de libro virtual con backend y frontend",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "keywords": [],
@@ -15,7 +14,6 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "express": "^5.2.1",
-    "firebase": "^12.7.0",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.16.3"
   }
