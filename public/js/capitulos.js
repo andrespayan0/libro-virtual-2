@@ -11,12 +11,12 @@ fetch("/api/capitulos")
       return;
     }
 
-    // Guardamos el índice REAL
-    const ordenados = capitulos
-      .map((cap, index) => ({ ...cap, realIndex: index }))
-      .sort((a, b) => a.fecha - b.fecha); // viejos primero
+    // 🔹 ordenamos del más viejo al más nuevo
+    const ordenados = [...capitulos].sort(
+      (a, b) => a.fecha - b.fecha
+    );
 
-    ordenados.forEach(capitulo => {
+    ordenados.forEach((capitulo, indexOrdenado) => {
       const card = document.createElement("article");
       card.className = "capitulo-card";
 
@@ -25,13 +25,20 @@ fetch("/api/capitulos")
         <p>${capitulo.descripcion}</p>
       `;
 
+      // 🔑 usamos el índice DEL ARRAY ORDENADO
       card.onclick = () => {
         window.location.href =
-          `capitulo.html?id=${capitulo.realIndex}`;
+          `capitulo.html?pos=${indexOrdenado}`;
       };
 
       contenedor.appendChild(card);
     });
+
+    // guardamos el orden en localStorage
+    localStorage.setItem(
+      "ordenCapitulos",
+      JSON.stringify(ordenados)
+    );
   })
   .catch(err => {
     console.error(err);
