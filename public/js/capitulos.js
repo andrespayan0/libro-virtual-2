@@ -12,10 +12,12 @@ fetch("/api/capitulos")
       return;
     }
 
-    // Mostrar capítulos del más viejo al más nuevo
-    capitulos.reverse();
+    // ORDENAR DEL MÁS ANTIGUO AL MÁS NUEVO
+    const ordenados = [...capitulos].sort(
+      (a, b) => a.fecha - b.fecha
+    );
 
-    capitulos.forEach((capitulo, index) => {
+    ordenados.forEach(capitulo => {
       const card = document.createElement("article");
       card.className = "capitulo-card";
 
@@ -24,16 +26,16 @@ fetch("/api/capitulos")
         <p>${capitulo.descripcion}</p>
       `;
 
-      card.addEventListener("click", () => {
-        window.location.href = `capitulo.html?id=${index}`;
-      });
+      card.onclick = () => {
+        window.location.href = `capitulo.html?id=${capitulo.id}`;
+      };
 
       contenedor.appendChild(card);
     });
   })
   .catch(error => {
-    console.error("Error cargando capítulos:", error);
+    console.error(error);
     contenedor.innerHTML = `
-      <p class="sin-capitulos">Error al cargar los capítulos.</p>
+      <p class="sin-capitulos">Error al cargar capítulos.</p>
     `;
   });
