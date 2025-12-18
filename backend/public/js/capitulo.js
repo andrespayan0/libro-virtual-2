@@ -6,30 +6,35 @@ const contenidoEl = document.getElementById("contenidoCapitulo");
 const btnDark = document.getElementById("toggleDark");
 const btnVolver = document.querySelector(".btn-volver");
 
-// ====== DARK MODE ======
+/* =========================
+   DARK MODE
+========================= */
 function aplicarModo() {
   const dark = document.body.classList.contains("dark");
 
+  // botón modo noche
   btnDark.style.backgroundColor = dark
     ? "rgba(255,255,255,0.08)"
     : "rgba(47,111,78,0.08)";
   btnDark.style.color = dark ? "#eaeaea" : "#2f6f4e";
 
+  // botón volver
   btnVolver.style.backgroundColor = dark
     ? "rgba(255,255,255,0.08)"
     : "rgba(47,111,78,0.08)";
   btnVolver.style.color = dark ? "#eaeaea" : "#2f6f4e";
 
-  // texto
+  // texto capítulo
   document.querySelectorAll(".pagina-capitulo p").forEach(p => {
     p.style.color = dark ? "#f1f1f1" : "";
   });
 }
 
-// estado guardado
+// estado inicial
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark");
 }
+aplicarModo();
 
 btnDark.onclick = () => {
   document.body.classList.toggle("dark");
@@ -40,7 +45,9 @@ btnDark.onclick = () => {
   aplicarModo();
 };
 
-// ====== CARGAR CAPÍTULO ======
+/* =========================
+   CARGAR CAPÍTULO
+========================= */
 fetch("/api/capitulos")
   .then(res => res.json())
   .then(capitulos => {
@@ -61,7 +68,9 @@ fetch("/api/capitulos")
     console.error(err);
   });
 
-// ====== RENDER ======
+/* =========================
+   RENDER TEXTO
+========================= */
 function renderizarContenido(texto) {
   contenidoEl.innerHTML = "";
 
