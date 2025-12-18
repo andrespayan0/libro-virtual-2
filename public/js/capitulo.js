@@ -1,12 +1,16 @@
 const params = new URLSearchParams(window.location.search);
-const index = params.get("id");
+const index = parseInt(params.get("id"));
 
 const tituloEl = document.getElementById("tituloCapitulo");
 const contenidoEl = document.getElementById("contenidoCapitulo");
 const btnDark = document.getElementById("toggleDark");
 
+const btnAnterior = document.getElementById("btnAnterior");
+const btnSiguiente = document.getElementById("btnSiguiente");
+const navCapitulo = document.querySelector(".nav-capitulo");
+
 /* =========================
-   DARK MODE (SOLO CLASE)
+   DARK MODE
 ========================= */
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark");
@@ -28,18 +32,44 @@ fetch("/api/capitulos")
   .then(capitulos => {
     const capitulo = capitulos[index];
 
-    if (!capitulo || !capitulo.paginas || capitulo.paginas.length === 0) {
-      contenidoEl.innerHTML = "<p>Este capítulo aún no tiene contenido.</p>";
+    if (!capitulo) {
+      contenidoEl.innerHTML = "<p>Capítulo no encontrado.</p>";
       return;
     }
 
     tituloEl.textContent = capitulo.titulo;
     renderizarContenido(capitulo.paginas.join("\n\n"));
+
+    configurarNavegacion(capitulos.length);
   })
   .catch(err => {
     contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
     console.error(err);
   });
+
+/* =========================
+   NAVEGACIÓN
+========================= */
+function configurarNavegacion(total) {
+  // Anterior
+  if (index > 0) {
+    btnAnterior.href = `capitulo.html?id=${index - 1}`;
+  } else {
+    btnAnterior.style.display = "none";
+  }
+
+  // Siguiente
+  if (index < total - 1) {
+    btnSiguiente.href = `capitulo.html?id=${index + 1}`;
+  } else {
+    btnSiguiente.style.display = "none";
+  }
+
+  // Si solo queda el anterior
+  if (btnAnterior.style.display === "none" || btnSiguiente.style.display === "none") {
+    navCapitulo.classList.add("solo-anterior");
+  }
+}
 
 /* =========================
    RENDER TEXTO
@@ -54,7 +84,7 @@ function renderizarContenido(texto) {
 
   parrafos.forEach(txt => {
     const p = document.createElement("p");
-    p.innerHTML = txt; // respeta formato del editor
+    p.innerHTML = txt;
     contenidoEl.appendChild(p);
   });
 }
@@ -62,30 +92,13 @@ function renderizarContenido(texto) {
 /* =========================
    BLOQUEO DE COPIADO
 ========================= */
-
-// Bloquear clic derecho
-document.addEventListener("contextmenu", e => {
-  e.preventDefault();
-});
-
-// Bloquear copiar / pegar / cortar
-["copy", "cut", "paste"].forEach(evento => {
-  document.addEventListener(evento, e => e.preventDefault());
-});
-
-// Bloquear combinaciones de teclado
+document.addEventListener("contextmenu", e => e.preventDefault());
+["copy", "cut", "paste"].forEach(e =>
+  document.addEventListener(e, ev => ev.preventDefault())
+);
 document.addEventListener("keydown", e => {
-  if (
-    e.ctrlKey &&
-    ["c", "x", "s", "u", "a"].includes(e.key.toLowerCase())
-  ) {
+  if (e.ctrlKey && ["c", "a", "s", "u", "x"].includes(e.key.toLowerCase())) {
     e.preventDefault();
   }
 });
-
-// Bloquear selección con mouse
 document.addEventListener("selectstart", e => e.preventDefault());
-
-document.addEventListener("copy", () => {
-  alert("📖 Este contenido está protegido");
-});

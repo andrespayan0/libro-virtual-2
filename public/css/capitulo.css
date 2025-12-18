@@ -173,3 +173,59 @@ body.dark .btn-dark:hover {
 .pagina-capitulo p::selection {
   background: transparent;
 }
+
+/* =========================
+   NAVEGACIÓN CAPÍTULOS
+========================= */
+.nav-capitulo {
+  margin-top: 56px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.btn-nav {
+  flex: 1;
+  text-align: center;
+
+  padding: 14px 18px;
+  border-radius: 18px;
+
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  background-color: rgba(47, 111, 78, 0.08);
+  color: #2f6f4e;
+
+  transition:
+    background-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.btn-nav:hover {
+  background-color: rgba(47, 111, 78, 0.16);
+  transform: translateY(-2px);
+}
+
+/* Si solo hay un botón, que se vea centrado */
+.nav-capitulo.solo-anterior {
+  justify-content: center;
+}
+
+.nav-capitulo.solo-anterior .btn-nav {
+  max-width: 320px;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+body.dark .btn-nav {
+  background-color: #000;
+  color: #fff;
+}
+
+body.dark .btn-nav:hover {
+  background-color: #111;
+}
+
