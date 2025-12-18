@@ -58,3 +58,34 @@ function renderizarContenido(texto) {
     contenidoEl.appendChild(p);
   });
 }
+
+/* =========================
+   BLOQUEO DE COPIADO
+========================= */
+
+// Bloquear clic derecho
+document.addEventListener("contextmenu", e => {
+  e.preventDefault();
+});
+
+// Bloquear copiar / pegar / cortar
+["copy", "cut", "paste"].forEach(evento => {
+  document.addEventListener(evento, e => e.preventDefault());
+});
+
+// Bloquear combinaciones de teclado
+document.addEventListener("keydown", e => {
+  if (
+    e.ctrlKey &&
+    ["c", "x", "s", "u", "a"].includes(e.key.toLowerCase())
+  ) {
+    e.preventDefault();
+  }
+});
+
+// Bloquear selección con mouse
+document.addEventListener("selectstart", e => e.preventDefault());
+
+document.addEventListener("copy", () => {
+  alert("📖 Este contenido está protegido");
+});

@@ -152,3 +152,24 @@ body.dark .btn-volver:hover,
 body.dark .btn-dark:hover {
   background-color: #111;
 }
+
+/* =========================
+   BLOQUEO DE COPIADO
+========================= */
+.pagina-capitulo {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  -webkit-touch-callout: none;
+}
+
+/* Evita resaltado visual */
+.pagina-capitulo::selection {
+  background: transparent;
+}
+
+.pagina-capitulo p::selection {
+  background: transparent;
+}

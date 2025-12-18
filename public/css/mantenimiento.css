@@ -1,30 +1,99 @@
+/* =========================
+   BASE
+========================= */
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  min-height: 100vh;
+
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #1f3a5a, #4b627a);
+  justify-content: center;
+
+  background: linear-gradient(
+    180deg,
+    #f4f7f3,
+    #e8efe9
+  );
+
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #fff;
+  color: #2f3e34;
 }
 
+/* =========================
+   CONTENEDOR
+========================= */
 .mantenimiento-container {
+  max-width: 560px;
+  width: calc(100% - 48px);
+
   text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 50px 30px;
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 56px 48px;
+
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    #f2f6f1
+  );
+
+  border-radius: 32px;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.12);
+
+  position: relative;
+  overflow: hidden;
 }
 
+/* Decoración sutil */
+.mantenimiento-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(47, 111, 78, 0.12),
+      transparent 55%
+    );
+
+  pointer-events: none;
+}
+
+/* =========================
+   TÍTULO
+========================= */
 .mantenimiento-container h1 {
-  font-size: 3rem;
+  font-size: 2.4rem;
   margin-bottom: 20px;
   font-weight: 700;
+  color: #2f6f4e;
 }
 
+/* =========================
+   TEXTO
+========================= */
 .mantenimiento-container p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #4b5e52;
+  margin: 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 480px) {
+  .mantenimiento-container {
+    padding: 44px 28px;
+    border-radius: 24px;
+  }
+
+  .mantenimiento-container h1 {
+    font-size: 2rem;
+  }
+
+  .mantenimiento-container p {
+    font-size: 1rem;
+  }
 }
