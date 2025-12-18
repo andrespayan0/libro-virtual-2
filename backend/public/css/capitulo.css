@@ -139,23 +139,16 @@ body.dark .separador {
   color: #9aa79f;
 }
 
-body.dark .btn-volver {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #eaeaea;
-}
-
-body.dark .btn-volver:hover {
-  background-color: rgba(255, 255, 255, 0.14);
-}
-
 /* =========================
-   BOTÓN DARK MODE NEGRO
+   BOTONES EN DARK MODE
 ========================= */
+body.dark .btn-volver,
 body.dark .btn-dark {
   background-color: #000;
   color: #fff;
 }
 
+body.dark .btn-volver:hover,
 body.dark .btn-dark:hover {
   background-color: #111;
 }
