@@ -6,16 +6,15 @@ fetch("/api/capitulos")
     contenedor.innerHTML = "";
 
     if (!Array.isArray(capitulos) || capitulos.length === 0) {
-      contenedor.innerHTML = `
-        <p class="sin-capitulos">Aún no hay capítulos publicados.</p>
-      `;
+      contenedor.innerHTML =
+        `<p class="sin-capitulos">Aún no hay capítulos publicados.</p>`;
       return;
     }
 
-    // ORDENAR DEL MÁS ANTIGUO AL MÁS NUEVO
-    const ordenados = [...capitulos].sort(
-      (a, b) => a.fecha - b.fecha
-    );
+    // Guardamos el índice REAL
+    const ordenados = capitulos
+      .map((cap, index) => ({ ...cap, realIndex: index }))
+      .sort((a, b) => a.fecha - b.fecha); // viejos primero
 
     ordenados.forEach(capitulo => {
       const card = document.createElement("article");
@@ -27,15 +26,15 @@ fetch("/api/capitulos")
       `;
 
       card.onclick = () => {
-        window.location.href = `capitulo.html?id=${capitulo.id}`;
+        window.location.href =
+          `capitulo.html?id=${capitulo.realIndex}`;
       };
 
       contenedor.appendChild(card);
     });
   })
-  .catch(error => {
-    console.error(error);
-    contenedor.innerHTML = `
-      <p class="sin-capitulos">Error al cargar capítulos.</p>
-    `;
+  .catch(err => {
+    console.error(err);
+    contenedor.innerHTML =
+      `<p class="sin-capitulos">Error al cargar capítulos.</p>`;
   });
