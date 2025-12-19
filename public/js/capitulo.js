@@ -202,3 +202,19 @@ lineMenos.onclick = () => {
   localStorage.setItem("lineHeight", lineHeight);
   aplicarPreferencias();
 };
+
+let ultimoScroll = 0;
+
+window.addEventListener("scroll", () => {
+  const actual = window.scrollY;
+
+  if (actual > ultimoScroll) {
+    // bajando
+    btnGuardar.classList.add("oculto");
+  } else {
+    // subiendo
+    btnGuardar.classList.remove("oculto");
+  }
+
+  ultimoScroll = actual;
+});
