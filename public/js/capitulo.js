@@ -1,3 +1,6 @@
+/* =========================
+   PARÁMETROS Y ELEMENTOS
+========================= */
 const params = new URLSearchParams(window.location.search);
 const index = parseInt(params.get("id"), 10);
 
@@ -8,6 +11,16 @@ const btnDark = document.getElementById("toggleDark");
 const btnAnterior = document.getElementById("btnAnterior");
 const btnSiguiente = document.getElementById("btnSiguiente");
 const navCapitulo = document.querySelector(".nav-capitulo");
+
+const btnGuardar = document.getElementById("guardarProgreso");
+const pagina = document.querySelector(".pagina-capitulo");
+
+/* =========================
+   UTILIDADES
+========================= */
+function esMovilOTablet() {
+  return window.innerWidth <= 1024;
+}
 
 /* =========================
    DARK MODE
@@ -31,9 +44,7 @@ fetch("/api/capitulos")
   .then(res => res.json())
   .then(capitulos => {
 
-    // 🔹 ORDEN REAL: DEL MÁS VIEJO AL MÁS NUEVO
     capitulos.sort((a, b) => a.id - b.id);
-
     const capitulo = capitulos[index];
 
     if (!capitulo) {
@@ -45,7 +56,6 @@ fetch("/api/capitulos")
     renderizarContenido(capitulo.paginas.join("\n\n"));
 
     restaurarProgreso();
-
     configurarNavegacion(capitulos.length);
   })
   .catch(err => {
@@ -53,16 +63,15 @@ fetch("/api/capitulos")
     console.error(err);
   });
 
-const btnGuardar = document.getElementById("guardarProgreso");
-
-// Guardar scroll actual
+/* =========================
+   GUARDAR / RESTAURAR PROGRESO
+========================= */
 btnGuardar.onclick = () => {
   localStorage.setItem(
     `progreso_capitulo_${index}`,
     window.scrollY
   );
 };
-
 
 function restaurarProgreso() {
   const progreso = localStorage.getItem(`progreso_capitulo_${index}`);
@@ -71,26 +80,20 @@ function restaurarProgreso() {
   let intentos = 0;
   const maxIntentos = 20;
 
-  const intentarScroll = () => {
+  const intentar = () => {
     window.scrollTo(0, parseInt(progreso, 10));
 
-    // Si ya llegó o se agotaron intentos, paramos
     if (
       Math.abs(window.scrollY - progreso) < 5 ||
       intentos >= maxIntentos
-    ) {
-      return;
-    }
+    ) return;
 
     intentos++;
-    requestAnimationFrame(intentarScroll);
+    requestAnimationFrame(intentar);
   };
 
-  requestAnimationFrame(intentarScroll);
+  requestAnimationFrame(intentar);
 }
-
-
-
 
 /* =========================
    NAVEGACIÓN
@@ -123,16 +126,15 @@ function configurarNavegacion(total) {
 function renderizarContenido(texto) {
   contenidoEl.innerHTML = "";
 
-  const parrafos = texto
+  texto
     .split(/\n\s*\n/)
     .map(p => p.trim())
-    .filter(p => p !== "");
-
-  parrafos.forEach(txt => {
-    const p = document.createElement("p");
-    p.innerHTML = txt;
-    contenidoEl.appendChild(p);
-  });
+    .filter(Boolean)
+    .forEach(txt => {
+      const p = document.createElement("p");
+      p.innerHTML = txt;
+      contenidoEl.appendChild(p);
+    });
 }
 
 /* =========================
@@ -152,11 +154,10 @@ document.addEventListener("selectstart", e => e.preventDefault());
 /* =========================
    MARCAR COMO LEÍDO
 ========================= */
-function marcarComoLeido(capituloId) {
-  localStorage.setItem(`capitulo_leido_${capituloId}`, "true");
+function marcarComoLeido(id) {
+  localStorage.setItem(`capitulo_leido_${id}`, "true");
 }
 
-// Detectar cuando llega al final
 window.addEventListener("scroll", () => {
   const scrollActual = window.scrollY + window.innerHeight;
   const alturaTotal = document.documentElement.scrollHeight;
@@ -166,36 +167,53 @@ window.addEventListener("scroll", () => {
   }
 });
 
-const pagina = document.querySelector(".pagina-capitulo");
+/* =========================
+   PREFERENCIAS DE LECTURA
+========================= */
+const esMovil = esMovilOTablet();
 
-let fontSize = parseFloat(localStorage.getItem("fontSize")) || 1.05;
-let maxWidth = parseInt(localStorage.getItem("maxWidth")) || 1100;
-let lineHeight = parseFloat(localStorage.getItem("lineHeight")) || 2;
+let fontSize = parseFloat(localStorage.getItem("fontSize"))
+  || (esMovil ? 1.1 : 1.05);
+
+let maxWidth = parseInt(localStorage.getItem("maxWidth"))
+  || (esMovil ? window.innerWidth - 32 : 1100);
+
+let lineHeight = parseFloat(localStorage.getItem("lineHeight"))
+  || (esMovil ? 1.8 : 2);
 
 function aplicarPreferencias() {
-  pagina.style.maxWidth = maxWidth + "px";
-  pagina.style.lineHeight = lineHeight;
-  pagina.querySelectorAll("p").forEach(p => {
-    p.style.fontSize = fontSize + "rem";
+  const esMovil = esMovilOTablet();
+
+  const anchoFinal = esMovil
+    ? Math.min(maxWidth, window.innerWidth - 32)
+    : maxWidth;
+
+  pagina.style.maxWidth = anchoFinal + "px";
+
+  pagina.querySelectorAll("p, li, blockquote").forEach(el => {
+    el.style.fontSize = fontSize + "rem";
+    el.style.lineHeight = lineHeight;
   });
 }
 
 aplicarPreferencias();
+window.addEventListener("resize", aplicarPreferencias);
 
-// Tamaño letra
+/* =========================
+   CONTROLES
+========================= */
 fontMas.onclick = () => {
-  fontSize += 0.05;
+  fontSize = Math.min(fontSize + 0.05, 1.6);
   localStorage.setItem("fontSize", fontSize);
   aplicarPreferencias();
 };
 
 fontMenos.onclick = () => {
-  fontSize -= 0.05;
+  fontSize = Math.max(fontSize - 0.05, 0.85);
   localStorage.setItem("fontSize", fontSize);
   aplicarPreferencias();
 };
 
-// Ancho
 anchoMas.onclick = () => {
   maxWidth += 50;
   localStorage.setItem("maxWidth", maxWidth);
@@ -203,34 +221,34 @@ anchoMas.onclick = () => {
 };
 
 anchoMenos.onclick = () => {
-  maxWidth -= 50;
+  maxWidth = Math.max(maxWidth - 50, 320);
   localStorage.setItem("maxWidth", maxWidth);
   aplicarPreferencias();
 };
 
-// Interlineado
 lineMas.onclick = () => {
-  lineHeight += 0.1;
+  lineHeight = Math.min(lineHeight + 0.1, 2.5);
   localStorage.setItem("lineHeight", lineHeight);
   aplicarPreferencias();
 };
 
 lineMenos.onclick = () => {
-  lineHeight -= 0.1;
+  lineHeight = Math.max(lineHeight - 0.1, 1.2);
   localStorage.setItem("lineHeight", lineHeight);
   aplicarPreferencias();
 };
 
+/* =========================
+   BOTÓN GUARDAR FLOTANTE
+========================= */
 let ultimoScroll = 0;
 
 window.addEventListener("scroll", () => {
   const actual = window.scrollY;
 
   if (actual > ultimoScroll) {
-    // bajando
     btnGuardar.classList.add("oculto");
   } else {
-    // subiendo
     btnGuardar.classList.remove("oculto");
   }
 

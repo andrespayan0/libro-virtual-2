@@ -280,3 +280,21 @@ body.dark .btn-progreso {
   background-color: #000;
 }
 
+#pagina {
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* tablets */
+@media (max-width: 1024px) {
+  #pagina {
+    padding: 14px;
+  }
+}
+
+/* móviles */
+@media (max-width: 600px) {
+  #pagina {
+    padding: 12px;
+  }
+}
