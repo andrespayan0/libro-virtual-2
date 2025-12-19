@@ -44,6 +44,8 @@ fetch("/api/capitulos")
     tituloEl.textContent = capitulo.titulo;
     renderizarContenido(capitulo.paginas.join("\n\n"));
 
+    restaurarProgreso
+
     configurarNavegacion(capitulos.length);
   })
   .catch(err => {
@@ -61,16 +63,17 @@ btnGuardar.onclick = () => {
   );
 };
 
-// Restaurar progreso
-window.addEventListener("load", () => {
+function restaurarProgreso() {
   const progreso = localStorage.getItem(`progreso_capitulo_${index}`);
-  if (progreso) {
+  if (!progreso) return;
+
+  setTimeout(() => {
     window.scrollTo({
       top: parseInt(progreso, 10),
       behavior: "smooth"
     });
-  }
-});
+  }, 200);
+}
 
 
 
