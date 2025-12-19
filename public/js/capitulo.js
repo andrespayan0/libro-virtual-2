@@ -51,6 +51,29 @@ fetch("/api/capitulos")
     console.error(err);
   });
 
+const btnGuardar = document.getElementById("guardarProgreso");
+
+// Guardar scroll actual
+btnGuardar.onclick = () => {
+  localStorage.setItem(
+    `progreso_capitulo_${index}`,
+    window.scrollY
+  );
+};
+
+// Restaurar progreso
+window.addEventListener("load", () => {
+  const progreso = localStorage.getItem(`progreso_capitulo_${index}`);
+  if (progreso) {
+    window.scrollTo({
+      top: parseInt(progreso, 10),
+      behavior: "smooth"
+    });
+  }
+});
+
+
+
 /* =========================
    NAVEGACIÓN
 ========================= */
@@ -124,3 +147,58 @@ window.addEventListener("scroll", () => {
     marcarComoLeido(index);
   }
 });
+
+const pagina = document.querySelector(".pagina-capitulo");
+
+let fontSize = parseFloat(localStorage.getItem("fontSize")) || 1.05;
+let maxWidth = parseInt(localStorage.getItem("maxWidth")) || 1100;
+let lineHeight = parseFloat(localStorage.getItem("lineHeight")) || 2;
+
+function aplicarPreferencias() {
+  pagina.style.maxWidth = maxWidth + "px";
+  pagina.style.lineHeight = lineHeight;
+  pagina.querySelectorAll("p").forEach(p => {
+    p.style.fontSize = fontSize + "rem";
+  });
+}
+
+aplicarPreferencias();
+
+// Tamaño letra
+fontMas.onclick = () => {
+  fontSize += 0.05;
+  localStorage.setItem("fontSize", fontSize);
+  aplicarPreferencias();
+};
+
+fontMenos.onclick = () => {
+  fontSize -= 0.05;
+  localStorage.setItem("fontSize", fontSize);
+  aplicarPreferencias();
+};
+
+// Ancho
+anchoMas.onclick = () => {
+  maxWidth += 50;
+  localStorage.setItem("maxWidth", maxWidth);
+  aplicarPreferencias();
+};
+
+anchoMenos.onclick = () => {
+  maxWidth -= 50;
+  localStorage.setItem("maxWidth", maxWidth);
+  aplicarPreferencias();
+};
+
+// Interlineado
+lineMas.onclick = () => {
+  lineHeight += 0.1;
+  localStorage.setItem("lineHeight", lineHeight);
+  aplicarPreferencias();
+};
+
+lineMenos.onclick = () => {
+  lineHeight -= 0.1;
+  localStorage.setItem("lineHeight", lineHeight);
+  aplicarPreferencias();
+};

@@ -229,3 +229,20 @@ body.dark .btn-nav:hover {
   background-color: #111;
 }
 
+.controles-lectura {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.controles-lectura button {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: rgba(47, 111, 78, 0.1);
+  color: #2f6f4e;
+}
+
+

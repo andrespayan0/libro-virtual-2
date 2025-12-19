@@ -23,18 +23,18 @@ fetch("/api/capitulos")
       card.classList.add("capitulo-card");
 
       const leido = localStorage.getItem(`capitulo_leido_${index}`) === "true";
+      const esNuevo = index === capitulos.length - 1;
 
       card.innerHTML = `
     <h3>
       ${capitulo.titulo}
+      ${esNuevo ? '<span class="badge-nuevo">Nuevo</span>' : ''}
       ${leido ? '<span class="leido">✔ Leído</span>' : ''}
     </h3>
     <p>${capitulo.descripcion}</p>
   `;
 
-      if (leido) {
-        card.classList.add("capitulo-leido");
-      }
+      if (leido) card.classList.add("capitulo-leido");
 
       card.addEventListener("click", () => {
         window.location.href = `capitulo.html?id=${index}`;
@@ -42,6 +42,7 @@ fetch("/api/capitulos")
 
       contenedor.appendChild(card);
     });
+
 
   })
   .catch(error => {
