@@ -44,7 +44,7 @@ fetch("/api/capitulos")
     tituloEl.textContent = capitulo.titulo;
     renderizarContenido(capitulo.paginas.join("\n\n"));
 
-    restaurarProgreso
+    restaurarProgreso();
 
     configurarNavegacion(capitulos.length);
   })
@@ -63,17 +63,32 @@ btnGuardar.onclick = () => {
   );
 };
 
+
 function restaurarProgreso() {
   const progreso = localStorage.getItem(`progreso_capitulo_${index}`);
   if (!progreso) return;
 
-  setTimeout(() => {
-    window.scrollTo({
-      top: parseInt(progreso, 10),
-      behavior: "smooth"
-    });
-  }, 200);
+  let intentos = 0;
+  const maxIntentos = 20;
+
+  const intentarScroll = () => {
+    window.scrollTo(0, parseInt(progreso, 10));
+
+    // Si ya llegó o se agotaron intentos, paramos
+    if (
+      Math.abs(window.scrollY - progreso) < 5 ||
+      intentos >= maxIntentos
+    ) {
+      return;
+    }
+
+    intentos++;
+    requestAnimationFrame(intentarScroll);
+  };
+
+  requestAnimationFrame(intentarScroll);
 }
+
 
 
 
