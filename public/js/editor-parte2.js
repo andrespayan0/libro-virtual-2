@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   async function cargarCapitulos() {
-    const res = await fetch("/api/capitulos_parte2", {
+    const res = await fetch("/api/editor/capitulos2", {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -49,16 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
     editId = c.id;
     titulo.value = c.titulo;
     descripcion.value = c.descripcion || "";
-    contenido.innerHTML = Array.isArray(c.paginas)
-      ? c.paginas.join("<br><br>")
-      : "";
+    contenido.innerHTML = Array.isArray(c.paginas) ? c.paginas.join("<br><br>") : "";
     fecha.value = c.fecha ? c.fecha.slice(0, 16) : "";
   }
 
   async function borrar(id) {
     if (!confirm("¿Eliminar capítulo?")) return;
 
-    await fetch(`/api/capitulos_parte2/${id}`, {
+    await fetch(`/api/capitulos2/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -75,8 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const url = editId
-      ? `/api/capitulos_parte2/${editId}`
-      : "/api/capitulos_parte2";
+      ? `/api/capitulos2/${editId}`
+      : "/api/capitulos2";
 
     const method = editId ? "PUT" : "POST";
 
