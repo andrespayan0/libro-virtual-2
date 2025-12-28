@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Capítulo | Confesiones</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/capitulo-parte2.css">
+  <link rel="shortcut icon" href="assets/img/icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3LQ18NZFZN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-3LQ18NZFZN');
+  </script>
+</head>
+
+<body>
+
+  <header>
+    <a href="index.html" class="btn-volver">← Volver</a>
+    <button id="toggleDark" class="btn-dark">Modo noche</button>
+  </header>
+
+
+  <main class="capitulo-container">
+    <h1 class="capitulo-titulo pacifico-regular" id="tituloCapitulo"></h1>
+
+    <div class="controles-lectura">
+      <button id="fontMas">A+</button>
+      <button id="fontMenos">A-</button>
+      <button id="anchoMas">⇔+</button>
+      <button id="anchoMenos">⇔-</button>
+      <button id="lineMas">≡+</button>
+      <button id="lineMenos">≡-</button>
+    </div>
+
+
+    <section class="pagina-capitulo" id="contenidoCapitulo">
+      <!-- El JS inserta aquí el texto -->
+    </section>
+
+    <nav class="nav-capitulo">
+      <a id="btnAnterior" class="btn-nav" href="#">← Anterior</a>
+      <a id="btnSiguiente" class="btn-nav" href="#">Siguiente →</a>
+    </nav>
+
+    <button id="guardarProgreso" class="btn-progreso">
+      💾 Guardar progreso
+    </button>
+
+
+  </main>
+
+  <script src="js/capitulo-parte2.js"></script>
+</body>
+
+</html>

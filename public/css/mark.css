@@ -1,0 +1,248 @@
+/* =========================
+   VARIABLES — LIBRO II
+========================= */
+:root {
+  --azul-nav-1: #6f8fb6;
+  --azul-nav-2: #8fb0d4;
+
+  --azul-titulo-1: #3e5f86;
+  --azul-titulo-2: #6f8fb6;
+
+  --azul-card-1: #f7faff;
+  --azul-card-2: #e8f0fb;
+
+  --texto-principal: #1f3a5a;
+  --texto-secundario: #4f6f91;
+
+  --fondo-general: #f6f8f4;
+}
+
+/* =========================
+   RESET BÁSICO
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--fondo-general);
+  color: var(--texto-principal);
+}
+
+/* =========================
+   HEADER / NAV
+========================= */
+.header-libro {
+  background: linear-gradient(
+    135deg,
+    var(--azul-nav-1),
+    var(--azul-nav-2)
+  );
+  padding: 22px 56px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand img {
+  width: 48px;
+}
+
+.brand-title {
+  font-family: "Pacifico", cursive;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+/* NAV */
+.nav-libro a {
+  margin-left: 14px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 10px 22px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.nav-libro a:hover {
+  background: rgba(255, 255, 255, 0.55);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.home-container {
+  max-width: 1100px;
+  margin: 120px auto 140px;
+  padding: 0 24px;
+}
+
+/* =========================
+   INTRO (ESTILO REFERENCIA)
+========================= */
+.intro-libro {
+  text-align: center;
+  margin-bottom: 120px;
+}
+
+.intro-libro::before {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 28px;
+
+  background-image: url("../assets/img/icon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  opacity: 0.9;
+}
+
+.titulo-libro {
+  font-family: "Pacifico", cursive;
+  font-size: 3.8rem;
+  font-weight: 400;
+  margin-bottom: 26px;
+
+  background: linear-gradient(
+    135deg,
+    var(--azul-titulo-1),
+    var(--azul-titulo-2)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.descripcion-libro {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: 1.12rem;
+  line-height: 1.9;
+  color: var(--texto-secundario);
+}
+
+/* =========================
+   LISTA DE CAPÍTULOS
+========================= */
+.capitulos-lista {
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  gap: 32px;
+}
+
+.sin-capitulos {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--texto-secundario);
+}
+
+/* =========================
+   TARJETAS DE CAPÍTULO
+========================= */
+.capitulo-card {
+  background: linear-gradient(
+    180deg,
+    var(--azul-card-1),
+    var(--azul-card-2)
+  );
+
+  border-radius: 26px;
+  padding: 34px 38px;
+  cursor: pointer;
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.capitulo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+}
+
+.capitulo-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  color: var(--texto-principal);
+}
+
+.capitulo-card p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--texto-secundario);
+}
+
+.capitulo-fecha {
+  margin-top: 18px;
+  font-size: 0.85rem;
+  color: #6f86a4;
+}
+
+/* =========================
+   CAPÍTULO LEÍDO
+========================= */
+.capitulo-leido {
+  opacity: 0.7;
+}
+
+.leido {
+  margin-left: 8px;
+  font-size: 0.85rem;
+  color: #4a78b8;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .home-container {
+    margin: 90px auto 110px;
+  }
+
+  .titulo-libro {
+    font-size: 3rem;
+  }
+
+  .descripcion-libro {
+    font-size: 1.05rem;
+  }
+
+  .capitulo-card {
+    padding: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-libro {
+    padding: 18px 22px;
+  }
+
+  .brand-title {
+    font-size: 1.15rem;
+  }
+
+  .titulo-libro {
+    font-size: 2.4rem;
+  }
+
+  .descripcion-libro {
+    font-size: 1rem;
+  }
+}
