@@ -2,7 +2,7 @@
    PARÁMETROS Y ELEMENTOS
 ========================= */
 const params = new URLSearchParams(window.location.search);
-const id = parseInt(params.get("id"), 10);
+const index = parseInt(params.get("id"), 10);
 
 const tituloEl = document.getElementById("tituloCapitulo");
 const contenidoEl = document.getElementById("contenidoCapitulo");
@@ -14,6 +14,14 @@ const navCapitulo = document.querySelector(".nav-capitulo");
 
 const btnGuardar = document.getElementById("guardarProgreso");
 const pagina = document.querySelector(".pagina-capitulo");
+
+/* controles extra */
+const fontMas = document.getElementById("fontMas");
+const fontMenos = document.getElementById("fontMenos");
+const anchoMas = document.getElementById("anchoMas");
+const anchoMenos = document.getElementById("anchoMenos");
+const lineMas = document.getElementById("lineMas");
+const lineMenos = document.getElementById("lineMenos");
 
 /* =========================
    UTILIDADES
@@ -38,22 +46,20 @@ btnDark.onclick = () => {
    CARGAR CAPÍTULO (PARTE 2)
 ========================= */
 fetch("/api/capitulos2")
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("Respuesta no válida");
+    return res.json();
+  })
   .then(capitulos => {
-
     capitulos.sort((a, b) => a.id - b.id);
 
-    const capitulo = capitulos.find(c => c.id === id);
-    const posicion = capitulos.findIndex(c => c.id === id);
-
+    const capitulo = capitulos[index];
     if (!capitulo) {
       contenidoEl.innerHTML = "<p>Capítulo no encontrado.</p>";
       return;
     }
 
     tituloEl.textContent = capitulo.titulo;
-
-    // 🔹 AQUÍ ESTABA EL ERROR
     renderizarContenido(
       Array.isArray(capitulo.paginas)
         ? capitulo.paginas.join("\n\n")
@@ -61,11 +67,11 @@ fetch("/api/capitulos2")
     );
 
     restaurarProgreso();
-    configurarNavegacion(capitulos, posicion);
+    configurarNavegacion(capitulos.length);
   })
   .catch(err => {
-    contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
     console.error(err);
+    contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
   });
 
 /* =========================
@@ -73,15 +79,13 @@ fetch("/api/capitulos2")
 ========================= */
 btnGuardar.onclick = () => {
   localStorage.setItem(
-    `progreso_capitulo_parte2_${id}`,
+    `progreso_capitulo2_${index}`,
     window.scrollY
   );
 };
 
 function restaurarProgreso() {
-  const progreso = localStorage.getItem(
-    `progreso_capitulo_parte2_${id}`
-  );
+  const progreso = localStorage.getItem(`progreso_capitulo2_${index}`);
   if (!progreso) return;
 
   let intentos = 0;
@@ -105,16 +109,15 @@ function restaurarProgreso() {
 /* =========================
    NAVEGACIÓN
 ========================= */
-function configurarNavegacion(capitulos, posicion) {
-
-  if (posicion > 0) {
-    btnAnterior.href = `capitulo2.html?id=${capitulos[posicion - 1].id}`;
+function configurarNavegacion(total) {
+  if (index > 0) {
+    btnAnterior.href = `capitulo2.html?id=${index - 1}`;
   } else {
     btnAnterior.style.display = "none";
   }
 
-  if (posicion < capitulos.length - 1) {
-    btnSiguiente.href = `capitulo2.html?id=${capitulos[posicion + 1].id}`;
+  if (index < total - 1) {
+    btnSiguiente.href = `capitulo2.html?id=${index + 1}`;
   } else {
     btnSiguiente.style.display = "none";
   }
@@ -145,20 +148,6 @@ function renderizarContenido(texto) {
 }
 
 /* =========================
-   BLOQUEO DE COPIADO
-========================= */
-document.addEventListener("contextmenu", e => e.preventDefault());
-["copy", "cut", "paste"].forEach(e =>
-  document.addEventListener(e, ev => ev.preventDefault())
-);
-document.addEventListener("keydown", e => {
-  if (e.ctrlKey && ["c", "a", "s", "u", "x"].includes(e.key.toLowerCase())) {
-    e.preventDefault();
-  }
-});
-document.addEventListener("selectstart", e => e.preventDefault());
-
-/* =========================
    MARCAR COMO LEÍDO
 ========================= */
 function marcarComoLeido(id) {
@@ -170,23 +159,16 @@ window.addEventListener("scroll", () => {
   const alturaTotal = document.documentElement.scrollHeight;
 
   if (scrollActual >= alturaTotal - 10) {
-    marcarComoLeido(id);
+    marcarComoLeido(index);
   }
 });
 
 /* =========================
    PREFERENCIAS DE LECTURA
 ========================= */
-const esMovil = esMovilOTablet();
-
-let fontSize = parseFloat(localStorage.getItem("fontSize"))
-  || (esMovil ? 1.1 : 1.05);
-
-let maxWidth = parseInt(localStorage.getItem("maxWidth"))
-  || (esMovil ? window.innerWidth - 32 : 1100);
-
-let lineHeight = parseFloat(localStorage.getItem("lineHeight"))
-  || (esMovil ? 1.8 : 2);
+let fontSize = parseFloat(localStorage.getItem("fontSize")) || 1.05;
+let maxWidth = parseInt(localStorage.getItem("maxWidth")) || 1100;
+let lineHeight = parseFloat(localStorage.getItem("lineHeight")) || 2;
 
 function aplicarPreferencias() {
   const esMovil = esMovilOTablet();
@@ -197,14 +179,53 @@ function aplicarPreferencias() {
 
   pagina.style.maxWidth = anchoFinal + "px";
 
-  pagina.querySelectorAll("p").forEach(el => {
-    el.style.fontSize = fontSize + "rem";
-    el.style.lineHeight = lineHeight;
+  pagina.querySelectorAll("p").forEach(p => {
+    p.style.fontSize = fontSize + "rem";
+    p.style.lineHeight = lineHeight;
   });
 }
 
 aplicarPreferencias();
 window.addEventListener("resize", aplicarPreferencias);
+
+/* =========================
+   CONTROLES
+========================= */
+fontMas.onclick = () => {
+  fontSize = Math.min(fontSize + 0.05, 1.6);
+  localStorage.setItem("fontSize", fontSize);
+  aplicarPreferencias();
+};
+
+fontMenos.onclick = () => {
+  fontSize = Math.max(fontSize - 0.05, 0.85);
+  localStorage.setItem("fontSize", fontSize);
+  aplicarPreferencias();
+};
+
+anchoMas.onclick = () => {
+  maxWidth += 50;
+  localStorage.setItem("maxWidth", maxWidth);
+  aplicarPreferencias();
+};
+
+anchoMenos.onclick = () => {
+  maxWidth = Math.max(maxWidth - 50, 320);
+  localStorage.setItem("maxWidth", maxWidth);
+  aplicarPreferencias();
+};
+
+lineMas.onclick = () => {
+  lineHeight = Math.min(lineHeight + 0.1, 2.5);
+  localStorage.setItem("lineHeight", lineHeight);
+  aplicarPreferencias();
+};
+
+lineMenos.onclick = () => {
+  lineHeight = Math.max(lineHeight - 0.1, 1.2);
+  localStorage.setItem("lineHeight", lineHeight);
+  aplicarPreferencias();
+};
 
 /* =========================
    BOTÓN GUARDAR FLOTANTE
@@ -222,3 +243,17 @@ window.addEventListener("scroll", () => {
 
   ultimoScroll = actual;
 });
+
+/* =========================
+   BLOQUEO DE COPIADO
+========================= */
+document.addEventListener("contextmenu", e => e.preventDefault());
+["copy", "cut", "paste"].forEach(e =>
+  document.addEventListener(e, ev => ev.preventDefault())
+);
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && ["c", "a", "s", "u", "x"].includes(e.key.toLowerCase())) {
+    e.preventDefault();
+  }
+});
+document.addEventListener("selectstart", e => e.preventDefault());
