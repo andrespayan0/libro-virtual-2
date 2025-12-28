@@ -2,7 +2,7 @@
    PARÁMETROS Y ELEMENTOS
 ========================= */
 const params = new URLSearchParams(window.location.search);
-const index = parseInt(params.get("id"), 10);
+const id = parseInt(params.get("id"), 10);
 
 const tituloEl = document.getElementById("tituloCapitulo");
 const contenidoEl = document.getElementById("contenidoCapitulo");
@@ -31,38 +31,41 @@ if (localStorage.getItem("darkMode") === "true") {
 
 btnDark.onclick = () => {
   document.body.classList.toggle("dark");
-  localStorage.setItem(
-    "darkMode",
-    document.body.classList.contains("dark")
-  );
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
 };
 
 /* =========================
    CARGAR CAPÍTULO (PARTE 2)
 ========================= */
 fetch("/api/capitulos2")
-  .then(res => {
-    if (!res.ok) throw new Error("Respuesta no válida");
-    return res.json();
-  })
+  .then(res => res.json())
   .then(capitulos => {
+
     capitulos.sort((a, b) => a.id - b.id);
 
-    const capitulo = capitulos[index];
+    const capitulo = capitulos.find(c => c.id === id);
+    const posicion = capitulos.findIndex(c => c.id === id);
+
     if (!capitulo) {
       contenidoEl.innerHTML = "<p>Capítulo no encontrado.</p>";
       return;
     }
 
     tituloEl.textContent = capitulo.titulo;
-    renderizarContenido(capitulo.paginas.join("\n\n"));
+
+    // 🔹 AQUÍ ESTABA EL ERROR
+    renderizarContenido(
+      Array.isArray(capitulo.paginas)
+        ? capitulo.paginas.join("\n\n")
+        : ""
+    );
 
     restaurarProgreso();
-    configurarNavegacion(capitulos.length);
+    configurarNavegacion(capitulos, posicion);
   })
   .catch(err => {
-    console.error(err);
     contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
+    console.error(err);
   });
 
 /* =========================
@@ -70,30 +73,48 @@ fetch("/api/capitulos2")
 ========================= */
 btnGuardar.onclick = () => {
   localStorage.setItem(
-    `progreso_capitulo2_${index}`,
+    `progreso_capitulo_parte2_${id}`,
     window.scrollY
   );
 };
 
 function restaurarProgreso() {
-  const progreso = localStorage.getItem(`progreso_capitulo2_${index}`);
+  const progreso = localStorage.getItem(
+    `progreso_capitulo_parte2_${id}`
+  );
   if (!progreso) return;
 
-  window.scrollTo(0, parseInt(progreso, 10));
+  let intentos = 0;
+  const maxIntentos = 20;
+
+  const intentar = () => {
+    window.scrollTo(0, parseInt(progreso, 10));
+
+    if (
+      Math.abs(window.scrollY - progreso) < 5 ||
+      intentos >= maxIntentos
+    ) return;
+
+    intentos++;
+    requestAnimationFrame(intentar);
+  };
+
+  requestAnimationFrame(intentar);
 }
 
 /* =========================
    NAVEGACIÓN
 ========================= */
-function configurarNavegacion(total) {
-  if (index > 0) {
-    btnAnterior.href = `capitulo2.html?id=${index - 1}`;
+function configurarNavegacion(capitulos, posicion) {
+
+  if (posicion > 0) {
+    btnAnterior.href = `capitulo2.html?id=${capitulos[posicion - 1].id}`;
   } else {
     btnAnterior.style.display = "none";
   }
 
-  if (index < total - 1) {
-    btnSiguiente.href = `capitulo2.html?id=${index + 1}`;
+  if (posicion < capitulos.length - 1) {
+    btnSiguiente.href = `capitulo2.html?id=${capitulos[posicion + 1].id}`;
   } else {
     btnSiguiente.style.display = "none";
   }
@@ -124,45 +145,6 @@ function renderizarContenido(texto) {
 }
 
 /* =========================
-   MARCAR COMO LEÍDO
-========================= */
-function marcarComoLeido(id) {
-  localStorage.setItem(`capitulo2_leido_${id}`, "true");
-}
-
-window.addEventListener("scroll", () => {
-  const scrollActual = window.scrollY + window.innerHeight;
-  const alturaTotal = document.documentElement.scrollHeight;
-
-  if (scrollActual >= alturaTotal - 10) {
-    marcarComoLeido(index);
-  }
-});
-
-/* =========================
-   PREFERENCIAS DE LECTURA
-========================= */
-let fontSize = parseFloat(localStorage.getItem("fontSize")) || 1.05;
-let maxWidth = parseInt(localStorage.getItem("maxWidth")) || 1100;
-let lineHeight = parseFloat(localStorage.getItem("lineHeight")) || 2;
-
-function aplicarPreferencias() {
-  const esMovil = esMovilOTablet();
-
-  pagina.style.maxWidth = esMovil
-    ? window.innerWidth - 32 + "px"
-    : maxWidth + "px";
-
-  pagina.querySelectorAll("p").forEach(p => {
-    p.style.fontSize = fontSize + "rem";
-    p.style.lineHeight = lineHeight;
-  });
-}
-
-aplicarPreferencias();
-window.addEventListener("resize", aplicarPreferencias);
-
-/* =========================
    BLOQUEO DE COPIADO
 ========================= */
 document.addEventListener("contextmenu", e => e.preventDefault());
@@ -175,3 +157,68 @@ document.addEventListener("keydown", e => {
   }
 });
 document.addEventListener("selectstart", e => e.preventDefault());
+
+/* =========================
+   MARCAR COMO LEÍDO
+========================= */
+function marcarComoLeido(id) {
+  localStorage.setItem(`capitulo2_leido_${id}`, "true");
+}
+
+window.addEventListener("scroll", () => {
+  const scrollActual = window.scrollY + window.innerHeight;
+  const alturaTotal = document.documentElement.scrollHeight;
+
+  if (scrollActual >= alturaTotal - 10) {
+    marcarComoLeido(id);
+  }
+});
+
+/* =========================
+   PREFERENCIAS DE LECTURA
+========================= */
+const esMovil = esMovilOTablet();
+
+let fontSize = parseFloat(localStorage.getItem("fontSize"))
+  || (esMovil ? 1.1 : 1.05);
+
+let maxWidth = parseInt(localStorage.getItem("maxWidth"))
+  || (esMovil ? window.innerWidth - 32 : 1100);
+
+let lineHeight = parseFloat(localStorage.getItem("lineHeight"))
+  || (esMovil ? 1.8 : 2);
+
+function aplicarPreferencias() {
+  const esMovil = esMovilOTablet();
+
+  const anchoFinal = esMovil
+    ? Math.min(maxWidth, window.innerWidth - 32)
+    : maxWidth;
+
+  pagina.style.maxWidth = anchoFinal + "px";
+
+  pagina.querySelectorAll("p").forEach(el => {
+    el.style.fontSize = fontSize + "rem";
+    el.style.lineHeight = lineHeight;
+  });
+}
+
+aplicarPreferencias();
+window.addEventListener("resize", aplicarPreferencias);
+
+/* =========================
+   BOTÓN GUARDAR FLOTANTE
+========================= */
+let ultimoScroll = 0;
+
+window.addEventListener("scroll", () => {
+  const actual = window.scrollY;
+
+  if (actual > ultimoScroll) {
+    btnGuardar.classList.add("oculto");
+  } else {
+    btnGuardar.classList.remove("oculto");
+  }
+
+  ultimoScroll = actual;
+});
