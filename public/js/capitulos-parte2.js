@@ -1,6 +1,6 @@
 const contenedor = document.getElementById("capitulosLista");
 
-fetch("/api/capitulos_parte2")
+fetch("/api/capitulos2")
   .then(res => res.json())
   .then(capitulos => {
 
