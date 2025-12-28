@@ -14,15 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let editId = null;
 
-  const API_BASE = "/api/capitulos2"; // 🔹 PARTE 2
-
   logoutBtn.onclick = () => {
     localStorage.removeItem("token");
     location.href = "/";
   };
 
   async function cargarCapitulos() {
-    const res = await fetch(API_BASE, {
+    const res = await fetch("/api/capitulos_parte2", {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -60,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function borrar(id) {
     if (!confirm("¿Eliminar capítulo?")) return;
 
-    await fetch(`${API_BASE}/${id}`, {
+    await fetch(`/api/capitulos_parte2/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -76,7 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
       fecha: fecha.value
     };
 
-    const url = editId ? `${API_BASE}/${editId}` : API_BASE;
+    const url = editId
+      ? `/api/capitulos_parte2/${editId}`
+      : "/api/capitulos_parte2";
+
     const method = editId ? "PUT" : "POST";
 
     await fetch(url, {
@@ -103,6 +104,29 @@ document.addEventListener("DOMContentLoaded", () => {
       document.execCommand(btn.dataset.cmd, false, null);
       contenido.focus();
     };
+  });
+
+  const fontSize = document.getElementById("fontSize");
+  if (fontSize) {
+    fontSize.onchange = e => {
+      document.execCommand("fontSize", false, e.target.value);
+      contenido.focus();
+    };
+  }
+
+  contenido.addEventListener("keydown", e => {
+    if (e.ctrlKey && ["b","i","u"].includes(e.key)) {
+      e.preventDefault();
+      document.execCommand(
+        e.key === "b" ? "bold" :
+        e.key === "i" ? "italic" : "underline"
+      );
+    }
+
+    if (e.key === "Tab") {
+      e.preventDefault();
+      document.execCommand(e.shiftKey ? "outdent" : "indent");
+    }
   });
 
   cargarCapitulos();

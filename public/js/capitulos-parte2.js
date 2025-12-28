@@ -1,34 +1,51 @@
 const contenedor = document.getElementById("capitulosLista");
 
-const API_BASE = "/api/capitulos2";
-const STORAGE_PREF = "parte2";
-
-fetch(API_BASE)
+fetch("/api/capitulos_parte2")
   .then(res => res.json())
   .then(capitulos => {
 
+    // 🔹 MISMO ORDEN QUE EN capitulo.js
     capitulos.sort((a, b) => a.id - b.id);
+
     contenedor.innerHTML = "";
+
+    if (capitulos.length === 0) {
+      contenedor.innerHTML = `
+        <p class="sin-capitulos">
+          Aún no hay capítulos publicados.
+        </p>
+      `;
+      return;
+    }
 
     capitulos.forEach((capitulo, index) => {
       const card = document.createElement("article");
       card.classList.add("capitulo-card");
 
-      const leido = localStorage.getItem(
-        `capitulo_leido_${STORAGE_PREF}_${index}`
-      ) === "true";
+      const leido = localStorage.getItem(`capitulo_leido_${index}`) === "true";
+      const esNuevo = index === capitulos.length - 1;
 
       card.innerHTML = `
-        <h3>${capitulo.titulo}</h3>
+        <h3>
+          ${capitulo.titulo}
+          ${esNuevo ? '<span class="badge-nuevo">Nuevo</span>' : ''}
+          ${leido ? '<span class="leido">✔ Leído</span>' : ''}
+        </h3>
         <p>${capitulo.descripcion}</p>
       `;
 
       if (leido) card.classList.add("capitulo-leido");
 
-      card.onclick = () => {
-        window.location.href = `capitulo-parte2.html?id=${index}`;
-      };
+      card.addEventListener("click", () => {
+        window.location.href = `capitulo.html?id=${index}`;
+      });
 
       contenedor.appendChild(card);
     });
+  })
+  .catch(error => {
+    console.error("Error cargando capítulos:", error);
+    contenedor.innerHTML = `
+      <p class="sin-capitulos">Error al cargar los capítulos.</p>
+    `;
   });
