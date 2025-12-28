@@ -38,9 +38,9 @@ btnDark.onclick = () => {
 };
 
 /* =========================
-   CARGAR CAPÍTULO
+   CARGAR CAPÍTULO (PARTE 2)
 ========================= */
-fetch("/api/capitulos2")
+fetch("/api/capitulos_parte2")
   .then(res => res.json())
   .then(capitulos => {
 
@@ -68,13 +68,15 @@ fetch("/api/capitulos2")
 ========================= */
 btnGuardar.onclick = () => {
   localStorage.setItem(
-    `progreso_capitulo_${index}`,
+    `progreso_capitulo_parte2_${index}`,
     window.scrollY
   );
 };
 
 function restaurarProgreso() {
-  const progreso = localStorage.getItem(`progreso_capitulo_${index}`);
+  const progreso = localStorage.getItem(
+    `progreso_capitulo_parte2_${index}`
+  );
   if (!progreso) return;
 
   let intentos = 0;
@@ -152,10 +154,10 @@ document.addEventListener("keydown", e => {
 document.addEventListener("selectstart", e => e.preventDefault());
 
 /* =========================
-   MARCAR COMO LEÍDO
+   MARCAR COMO LEÍDO (PARTE 2)
 ========================= */
 function marcarComoLeido(id) {
-  localStorage.setItem(`capitulo_leido_${id}`, "true");
+  localStorage.setItem(`capitulo2_leido_${id}`, "true");
 }
 
 window.addEventListener("scroll", () => {
