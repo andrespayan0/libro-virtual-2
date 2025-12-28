@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
 
 /* crear capítulo */
 router.post("/", (req, res) => {
-  const { titulo, descripcion, contenido, fechaPublicacion } = req.body;
+  const { titulo, descripcion, paginas, fecha } = req.body;
 
   const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
@@ -21,8 +21,8 @@ router.post("/", (req, res) => {
     id: Date.now(),
     titulo,
     descripcion,
-    contenido,
-    fechaPublicacion,
+    paginas,              // ✅ MISMO FORMATO
+    fecha,
     estado: "publicado"
   };
 

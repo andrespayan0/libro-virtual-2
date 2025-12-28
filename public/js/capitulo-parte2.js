@@ -2,7 +2,7 @@
    PARÁMETROS Y ELEMENTOS
 ========================= */
 const params = new URLSearchParams(window.location.search);
-const index = parseInt(params.get("id"), 10);
+const id = parseInt(params.get("id"), 10);
 
 const tituloEl = document.getElementById("tituloCapitulo");
 const contenidoEl = document.getElementById("contenidoCapitulo");
@@ -31,10 +31,7 @@ if (localStorage.getItem("darkMode") === "true") {
 
 btnDark.onclick = () => {
   document.body.classList.toggle("dark");
-  localStorage.setItem(
-    "darkMode",
-    document.body.classList.contains("dark")
-  );
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
 };
 
 /* =========================
@@ -45,7 +42,9 @@ fetch("/api/capitulos_parte2")
   .then(capitulos => {
 
     capitulos.sort((a, b) => a.id - b.id);
-    const capitulo = capitulos[index];
+
+    const capitulo = capitulos.find(c => c.id === id);
+    const posicion = capitulos.findIndex(c => c.id === id);
 
     if (!capitulo) {
       contenidoEl.innerHTML = "<p>Capítulo no encontrado.</p>";
@@ -53,10 +52,10 @@ fetch("/api/capitulos_parte2")
     }
 
     tituloEl.textContent = capitulo.titulo;
-    renderizarContenido(capitulo.paginas.join("\n\n"));
+    renderizarContenido(capitulo.contenido);
 
     restaurarProgreso();
-    configurarNavegacion(capitulos.length);
+    configurarNavegacion(capitulos, posicion);
   })
   .catch(err => {
     contenidoEl.innerHTML = "<p>Error al cargar el capítulo.</p>";
@@ -68,14 +67,14 @@ fetch("/api/capitulos_parte2")
 ========================= */
 btnGuardar.onclick = () => {
   localStorage.setItem(
-    `progreso_capitulo_parte2_${index}`,
+    `progreso_capitulo_parte2_${id}`,
     window.scrollY
   );
 };
 
 function restaurarProgreso() {
   const progreso = localStorage.getItem(
-    `progreso_capitulo_parte2_${index}`
+    `progreso_capitulo_parte2_${id}`
   );
   if (!progreso) return;
 
@@ -100,16 +99,16 @@ function restaurarProgreso() {
 /* =========================
    NAVEGACIÓN
 ========================= */
-function configurarNavegacion(total) {
+function configurarNavegacion(capitulos, posicion) {
 
-  if (index > 0) {
-    btnAnterior.href = `capitulo2.html?id=${index - 1}`;
+  if (posicion > 0) {
+    btnAnterior.href = `capitulo2.html?id=${capitulos[posicion - 1].id}`;
   } else {
     btnAnterior.style.display = "none";
   }
 
-  if (index < total - 1) {
-    btnSiguiente.href = `capitulo2.html?id=${index + 1}`;
+  if (posicion < capitulos.length - 1) {
+    btnSiguiente.href = `capitulo2.html?id=${capitulos[posicion + 1].id}`;
   } else {
     btnSiguiente.style.display = "none";
   }
@@ -154,7 +153,7 @@ document.addEventListener("keydown", e => {
 document.addEventListener("selectstart", e => e.preventDefault());
 
 /* =========================
-   MARCAR COMO LEÍDO (PARTE 2)
+   MARCAR COMO LEÍDO
 ========================= */
 function marcarComoLeido(id) {
   localStorage.setItem(`capitulo2_leido_${id}`, "true");
@@ -165,7 +164,7 @@ window.addEventListener("scroll", () => {
   const alturaTotal = document.documentElement.scrollHeight;
 
   if (scrollActual >= alturaTotal - 10) {
-    marcarComoLeido(index);
+    marcarComoLeido(id);
   }
 });
 
@@ -192,7 +191,7 @@ function aplicarPreferencias() {
 
   pagina.style.maxWidth = anchoFinal + "px";
 
-  pagina.querySelectorAll("p, li, blockquote").forEach(el => {
+  pagina.querySelectorAll("p").forEach(el => {
     el.style.fontSize = fontSize + "rem";
     el.style.lineHeight = lineHeight;
   });
@@ -200,45 +199,6 @@ function aplicarPreferencias() {
 
 aplicarPreferencias();
 window.addEventListener("resize", aplicarPreferencias);
-
-/* =========================
-   CONTROLES
-========================= */
-fontMas.onclick = () => {
-  fontSize = Math.min(fontSize + 0.05, 1.6);
-  localStorage.setItem("fontSize", fontSize);
-  aplicarPreferencias();
-};
-
-fontMenos.onclick = () => {
-  fontSize = Math.max(fontSize - 0.05, 0.85);
-  localStorage.setItem("fontSize", fontSize);
-  aplicarPreferencias();
-};
-
-anchoMas.onclick = () => {
-  maxWidth += 50;
-  localStorage.setItem("maxWidth", maxWidth);
-  aplicarPreferencias();
-};
-
-anchoMenos.onclick = () => {
-  maxWidth = Math.max(maxWidth - 50, 320);
-  localStorage.setItem("maxWidth", maxWidth);
-  aplicarPreferencias();
-};
-
-lineMas.onclick = () => {
-  lineHeight = Math.min(lineHeight + 0.1, 2.5);
-  localStorage.setItem("lineHeight", lineHeight);
-  aplicarPreferencias();
-};
-
-lineMenos.onclick = () => {
-  lineHeight = Math.max(lineHeight - 0.1, 1.2);
-  localStorage.setItem("lineHeight", lineHeight);
-  aplicarPreferencias();
-};
 
 /* =========================
    BOTÓN GUARDAR FLOTANTE
