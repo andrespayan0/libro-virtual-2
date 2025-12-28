@@ -4,7 +4,6 @@ fetch("/api/capitulos2")
   .then(res => res.json())
   .then(capitulos => {
 
-    // 🔹 MISMO ORDEN QUE EN capitulo.js
     capitulos.sort((a, b) => a.id - b.id);
 
     contenedor.innerHTML = "";
@@ -22,7 +21,7 @@ fetch("/api/capitulos2")
       const card = document.createElement("article");
       card.classList.add("capitulo-card");
 
-      const leido = localStorage.getItem(`capitulo_leido_${index}`) === "true";
+      const leido = localStorage.getItem(`capitulo2_leido_${index}`) === "true";
       const esNuevo = index === capitulos.length - 1;
 
       card.innerHTML = `
@@ -31,13 +30,14 @@ fetch("/api/capitulos2")
           ${esNuevo ? '<span class="badge-nuevo">Nuevo</span>' : ''}
           ${leido ? '<span class="leido">✔ Leído</span>' : ''}
         </h3>
-        <p>${capitulo.descripcion}</p>
+        <p>${capitulo.descripcion || ""}</p>
       `;
 
       if (leido) card.classList.add("capitulo-leido");
 
       card.addEventListener("click", () => {
-        window.location.href = `capitulo.html?id=${index}`;
+        // 👇 AQUÍ ESTABA EL ERROR
+        window.location.href = `capitulo2.html?id=${index}`;
       });
 
       contenedor.appendChild(card);
